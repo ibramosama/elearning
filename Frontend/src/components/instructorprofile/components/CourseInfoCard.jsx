@@ -6,7 +6,7 @@ import { faStar } from '@fortawesome/free-solid-svg-icons';
 const CourseInfoCard = () => {
   return (
     <>
-      {/* Card 1 */}
+     
       <div className={styles.card}>
         <div className={styles.imageContainer}>
           <img className={styles.courseImage} src="https://images.pexels.com/photos/3419718/pexels-photo-3419718.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Course" />
