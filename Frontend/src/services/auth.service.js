@@ -20,6 +20,10 @@ const updateToken = async ()=>{
                 logout()
             }
         })
+        .catch(err => {
+            console.error(err)
+            return err.status
+        })
 
     }
 }
