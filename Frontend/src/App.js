@@ -4,10 +4,12 @@ import { Routes ,Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import Home from './components/Home/Home';
 import Login from './components/Login/Login';
-
+import InstructorProfile from './components/instructorprofile/components/InstructorProfile'
 import NotFoundPage from './components/NotFoundPage/NotFoundPage';
 import Register from './components/Register/Register';
 import Auth from './components/Auth/Auth';
+import Google from './components/Auth/Goggle';
+import Facebook from './components/Auth/Facebook';
 function App() {
   const Role = {
     ADMIN:"ADMIN",
@@ -20,6 +22,7 @@ function App() {
         {/* public Routes */}
         <Route path ='/login' element ={<Login/>}/>
         <Route path ='/register' element = {<Register/>}/>
+        <Route path='profile' element={<InstructorProfile></InstructorProfile>}></Route>
         <Route path ='/home' element = {<Home/>}/>
         {/* admin Routes */}
         <Route element={<Auth allowedRoles={[Role.ADMIN]}/>}>
