@@ -1,0 +1,155 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  background-color: #fff;
+}
+
+.logo {
+  margin-right: 10px; 
+}
+
+.instructor {
+  display: flex;
+  align-items: center;
+}
+
+.instructorImage {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-right: 10px; 
+}
+
+.instructorInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+}
+
+.stars {
+  margin-right: 5px;
+}
+
+.ratingValue {
+  margin-left: 5px;
+}
+
+.ratingCount {
+  margin-left: 10px;
+  font-size: 12px;
+}
+
+.addCourseBtn {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #2196f3;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.collapsedSidebar {
+  display: none;
+}
+
+
+@media (min-width: 992px) {
+  .header {
+    padding: 20px;
+  }
+
+  .instructorInfo {
+    margin-right: 10px; 
+  }
+
+  .instructorImage {
+    width: 100px;
+    height: 100px;
+    margin-left: -430px;
+  }
+
+  .stars {
+    font-size: 18px;
+  }
+
+  .addCourseBtn {
+    font-size: 18px;
+    padding: 12px 24px;
+  }
+}
+
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .instructor {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .instructorImage {
+    width: 70px;
+    height: 70px;
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+
+  .instructorInfo {
+    text-align: center;
+    margin-right: 0; 
+  }
+
+  .stars {
+    font-size: 16px;
+  }
+
+  .addCourseBtn {
+    font-size: 16px;
+    padding: 10px 20px;
+  }
+}
+
+
+@media (max-width: 767px) {
+  .logo {
+    display: none;
+  }
+
+  .instructor {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .instructorImage {
+    width: 70px;
+    height: 70px;
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+
+  .rating {
+    margin-top: 10px;
+  }
+
+  .ratingCount {
+    display: none;
+  }
+
+  .stars {
+    font-size: 16px;
+  }
+
+  .addCourseBtn {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+
+  .collapsedSidebar {
+    display: block;
+  }
+}
