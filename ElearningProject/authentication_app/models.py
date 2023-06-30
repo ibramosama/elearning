@@ -13,8 +13,11 @@ class User(AbstractUser):
     image = models.ImageField(upload_to='stactic/images/')
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=128)
-    phone_number = models.CharField(max_length=20)
+    phone_number = models.CharField(max_length=11)
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='student')
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['first_name', 'last_name']
 
     def get_full_name(self):
         return f"{self.first_name}{self.last_name}"

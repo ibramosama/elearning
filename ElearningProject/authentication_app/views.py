@@ -1,10 +1,11 @@
-from rest_framework_simplejwt.tokens import RefreshToken
+
 from random import randint
 from django.contrib.sessions.backends.db import SessionStore
 from django.core.mail import send_mail
-from rest_framework import generics, status
+from rest_framework import generics, status, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 from ElearningProject import settings
 from .models import User
@@ -82,38 +83,32 @@ class VerifyOTPView(APIView):
         return Response(data=data, status=http_status)
 
 
+from django.http import HttpRequest
+
 class UserRegistrationView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = [permissions.AllowAny]
+
+
+from rest_framework_simplejwt.tokens import RefreshToken
+
+class UserLoginAPIView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
 
     def post(self, request, *args, **kwargs):
-        # Verify the OTP before proceeding with registration
-        verify_otp_view = VerifyOTPView.as_view()
-        verification_response = verify_otp_view(request)
-        if verification_response.status_code != status.HTTP_200_OK:
-            # OTP verification failed
-            return verification_response
-
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
+        # Generate the tokens
+        tokens = serializer.validated_data
+        refresh = str(tokens['refresh'])
+        access = str(tokens['access'])
 
-class UserLoginView(generics.GenericAPIView):
-    serializer_class = UserSerializer
-
-    def post(self, request):
-        email = request.data.get('email')
-        password = request.data.get('password')
-        user = User.objects.filter(email=email).first()
-
-        if user is None or not user.check_password(password):
-            return Response({'error': 'Invalid credentials'}, status=401)
-
-        refresh = RefreshToken.for_user(user)
+        # Return the tokens in the response
         return Response({
-            'refresh': str(refresh),
-            'access': str(refresh.access_token),
-        })
+            'refresh': refresh,
+            'access': access,
+        }, status=status.HTTP_200_OK)
+
+
