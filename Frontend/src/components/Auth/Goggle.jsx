@@ -1,6 +1,7 @@
 import GoogleLogin from "react-google-login";
 import axios from "axios";
 import { gapi } from "gapi-script";
+
 // get env vars
 const googleClientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 const drfClientId = process.env.REACT_APP_DRF_CLIENT_ID;
@@ -15,7 +16,6 @@ const handleGoogleLogin = (response) => {
       process.env.REACT_APP_GOOGLE_CLIENT_ID,
       plugin_name: "chat",
     });
-  });
   
   axios
     .post(`${baseURL}/auth/convert-token`, {
@@ -35,8 +35,8 @@ const handleGoogleLogin = (response) => {
     .catch((err) => {
       console.log("Error Google login", err);
     });
+  });
 };
-
 const Google = () => {
   return (
     <div className="App">
@@ -50,7 +50,7 @@ const Google = () => {
             onClick={renderProps.onClick}
             disabled={renderProps.disabled}
             type="button"
-            class="login-with-google-btn"
+            className="login-with-google-btn"
           >
             Sign in with Google
           </button>

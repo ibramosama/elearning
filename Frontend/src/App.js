@@ -4,7 +4,7 @@ import { Routes ,Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import Home from './components/Home/Home';
 import Login from './components/Login/Login';
-import InstructorProfile from './components/instructorprofile/components/InstructorProfile'
+import InstructorProfile from './components/InstructorProfile/InstructorProfile'
 import NotFoundPage from './components/NotFoundPage/NotFoundPage';
 import Register from './components/Register/Register';
 import Auth from './components/Auth/Auth';
@@ -39,6 +39,8 @@ function App() {
         </Route>
         {/* not found routes */}
         <Route path="*" element={<NotFoundPage />} />
+        <Route path="/Google" element={<Google/>}/>
+        <Route path="/Facebook" element={<Facebook/>}/>
       </Routes>
     </AuthProvider>
   );
