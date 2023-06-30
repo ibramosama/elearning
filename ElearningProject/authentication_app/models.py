@@ -10,7 +10,8 @@ class User(AbstractUser):
     )
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
-    image = models.ImageField(upload_to='stactic/images/')
+    image = models.ImageField(upload_to='user/images/')
+
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=128)
     phone_number = models.CharField(max_length=11)
