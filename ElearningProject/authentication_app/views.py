@@ -10,6 +10,25 @@ from ElearningProject import settings
 from .models import User
 from .serializers import UserSerializer
 
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+        token['email'] = user.email
+
+        # Add role if the user is an admin, instructor, or student
+        if user.is_staff:
+            token['role'] = 'admin'
+        elif user.is_instructor:
+            token['role'] = 'instructor'
+        elif user.is_student:
+            token['role'] = 'student'
+
+        return token
+
 
 class SendOTPView(APIView):
 

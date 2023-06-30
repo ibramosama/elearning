@@ -8,6 +8,8 @@ import InstructorProfile from './components/instructorprofile/components/Instruc
 import NotFoundPage from './components/NotFoundPage/NotFoundPage';
 import Register from './components/Register/Register';
 import Auth from './components/Auth/Auth';
+import Google from './components/Auth/Goggle';
+import Facebook from './components/Auth/Facebook';
 function App() {
   const Role = {
     ADMIN:"ADMIN",

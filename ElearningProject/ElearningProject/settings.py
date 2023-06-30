@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'authentication_app.apps.AuthenticationAppConfig',
+    'allauth.socialaccount.providers.facebook',
     'rest_framework',
     'rest_framework_simplejwt',
     'corsheaders',
@@ -97,6 +98,10 @@ AUTHENTICATION_BACKENDS = (
 
     # Django
     'django.contrib.auth.backends.ModelBackend',
+
+    # Facebook
+    'social_core.backends.facebook.FacebookOAuth2',
+
 )
 
 
@@ -123,6 +128,12 @@ REST_FRAMEWORK = {
 
 }
 
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
+'fields': 'id, first_name, last_name, email' }
+
+SOCIAL_AUTH_FACEBOOK_SCOPE = [
+    'email'
+]
 
 SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('Bearer',),
@@ -259,6 +270,9 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
     'https://www.googleapis.com/auth/userinfo.email',
     'https://www.googleapis.com/auth/userinfo.profile',
 ]
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_EXTRA_DATA = ['id', 'first_name', 'last_name']
+
 
 # Base url to serve media files
 MEDIA_URL = '/media/'
