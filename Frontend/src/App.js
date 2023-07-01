@@ -10,6 +10,7 @@ import Register from './components/Register/Register';
 import Auth from './components/Auth/Auth';
 import Google from './components/Auth/Goggle';
 import Facebook from './components/Auth/Facebook';
+import Test from './components/Register/Test';
 function App() {
   const Role = {
     ADMIN:"ADMIN",
@@ -37,7 +38,7 @@ function App() {
         <Route element={<Auth allowedRoles={[Role.STUDENT]}/>}>
           <Route path='/student' element={<Home/>}/>
         </Route>
-        {/* not found routes */}
+        <Route path = '/test' element = {<Test/>}/>
         <Route path="*" element={<NotFoundPage />} />
         <Route path="/Google" element={<Google/>}/>
         <Route path="/Facebook" element={<Facebook/>}/>

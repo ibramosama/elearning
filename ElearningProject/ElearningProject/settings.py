@@ -45,7 +45,11 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'sslserver',
+    'courses_app.apps.CoursesAppConfig',
+    'Assign_quizzes.apps.AssignQuizzesConfig',
 ]
+
 
 from datetime import timedelta
 
@@ -53,7 +57,6 @@ from datetime import timedelta
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-        'drf_social_oauth2.authentication.SocialAuthentication',
     ],
 }
 # Simple JWT settings
@@ -76,6 +79,11 @@ SIMPLE_JWT = {
     'TOKEN_USER_CLASS': 'rest_framework_simplejwt.models.TokenUser',
 }
 
+# Base url to serve media files
+MEDIA_URL = '/media/'
+
+# Path where media is stored
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 AUTH_USER_MODEL = 'authentication_app.User'
 
@@ -90,7 +98,6 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     'social_django.middleware.SocialAuthExceptionMiddleware',  # <-- Here
-
 ]
 
 CORS_ALLOWED_ORIGINS = ["https://localhost:3000", "https://localhost:8000"]
@@ -218,7 +225,7 @@ DATABASES = {
         'PORT': '5432',
     }
 }
-
+SESSION_COOKIE_SECURE=True
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 

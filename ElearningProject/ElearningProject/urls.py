@@ -8,6 +8,8 @@ from authentication_app.views import UserRegistrationView, SendOTPView, VerifyOT
 
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -18,7 +20,12 @@ urlpatterns = [
     path('auth/', include('drf_social_oauth2.urls', namespace='drf')),  
     path('token/', TokenObtainPairView.as_view(), name='token-obtain-pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token-refresh'),
+    path('course/', include('courses_app.urls')),
     path('', include('django.contrib.auth.urls')),
     path('oauth/', include('social_django.urls', namespace='social')), 
+    path('auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('Assign/', include('Assign_Quizzes.urls')),
 
-]
+
+]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
+

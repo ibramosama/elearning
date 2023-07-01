@@ -30,15 +30,17 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 
         return token
 
+om_el_otp = 0
 
 class SendOTPView(APIView):
-
     def post(self, request):
+        global om_el_otp
         data = {}
         email_subject = "Test Test"
         otp = str(randint(100000, 999999))
         email_body = f'Your verification OTP is: {otp}'
-
+        om_el_otp = otp
+        
         try:
             send_mail(email_subject, email_body, settings.EMAIL_HOST_USER, [request.data.get('email')], fail_silently=False)
             data['message'] = 'OTP sent successfully.'
@@ -49,7 +51,7 @@ class SendOTPView(APIView):
             session = SessionStore()
             session['otp'] = otp
             session.save()
-
+        
         except Exception as e:
             print(f'exception in send_otp => {e}')
             data = {'error': 'An error occurred while sending the OTP.'}
@@ -58,17 +60,18 @@ class SendOTPView(APIView):
         return Response(data=data, status=http_status)
 
 
+
 class VerifyOTPView(APIView):
 
     def post(self, request):
+        global om_el_otp
         data = {}
         try:
             received_otp = request.data.get('otp')
-            stored_otp = request.session.get('otp')
             print('Received OTP:', received_otp)
-            print('Stored OTP:', stored_otp)
+            print('Stored OTP:', om_el_otp)
 
-            if received_otp == stored_otp:
+            if received_otp == om_el_otp:
                 http_status = status.HTTP_200_OK
                 data['message'] = 'OTP verified successfully.'
             else:
@@ -90,6 +93,8 @@ class UserRegistrationView(generics.CreateAPIView):
     serializer_class = UserSerializer
     permission_classes = [permissions.AllowAny]
 
+    
+
 
 from rest_framework_simplejwt.tokens import RefreshToken
 
@@ -110,5 +115,4 @@ class UserLoginAPIView(TokenObtainPairView):
             'refresh': refresh,
             'access': access,
         }, status=status.HTTP_200_OK)
-
 
