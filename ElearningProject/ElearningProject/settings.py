@@ -11,12 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os
 from pathlib import Path
-<<<<<<< HEAD
 from decouple import config
-=======
-from django.template import context_processors
-import os
->>>>>>> e3ce7c4b137250b481571f29ca7a61780b8c1348
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -50,12 +45,11 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-<<<<<<< HEAD
-=======
     'sslserver',
-    'courses_app.apps.CoursesAppConfig'
->>>>>>> e3ce7c4b137250b481571f29ca7a61780b8c1348
+    'courses_app.apps.CoursesAppConfig',
+    'Assign_quizzes.apps.AssignQuizzesConfig',
 ]
+
 
 from datetime import timedelta
 
@@ -63,7 +57,6 @@ from datetime import timedelta
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-        'drf_social_oauth2.authentication.SocialAuthentication',
     ],
 }
 # Simple JWT settings
@@ -86,6 +79,11 @@ SIMPLE_JWT = {
     'TOKEN_USER_CLASS': 'rest_framework_simplejwt.models.TokenUser',
 }
 
+# Base url to serve media files
+MEDIA_URL = '/media/'
+
+# Path where media is stored
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 AUTH_USER_MODEL = 'authentication_app.User'
 
@@ -100,7 +98,6 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     'social_django.middleware.SocialAuthExceptionMiddleware',  # <-- Here
-
 ]
 
 CORS_ALLOWED_ORIGINS = ["https://localhost:3000", "https://localhost:8000"]
@@ -223,12 +220,12 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'Elearning',
         'USER': 'postgres',
-        'PASSWORD': 'moon',
+        'PASSWORD': 'sodium',
         'HOST': '',
         'PORT': '5432',
     }
 }
-
+SESSION_COOKIE_SECURE=True
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
@@ -263,6 +260,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
@@ -278,37 +276,4 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'shopfyibram@gmail.com'
 EMAIL_HOST_PASSWORD = 'sukfpcjunpcluyen'
 EMAIL_USE_TLS = True
-<<<<<<< HEAD
 EMAIL_USE_SSL = False
-=======
-EMAIL_USE_SSL = False
-
-
-
-SOCIAL_AUTH_FACEBOOK_KEY = '267310179314793'
-SOCIAL_AUTH_FACEBOOK_SECRET = '9fb5a4acbd8f09678a4191f0fbbed357'
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '1094981601773-3lqag5sefugf43hms1tgaqu7i5ufaorg.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
-
-SOCIAL_AUTH_FACEBOOK_EXTRA_DATA = [
-    ('name', 'name'),
-    ('email', 'email'),
-    ('picture', 'picture'),
-    ('link', 'profile_url'),
-]
-
-
-SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
-    'https://www.googleapis.com/auth/userinfo.email',
-    'https://www.googleapis.com/auth/userinfo.profile',
-]
-
-SOCIAL_AUTH_GOOGLE_OAUTH2_EXTRA_DATA = ['id', 'first_name', 'last_name']
-
-
-# Base url to serve media files
-MEDIA_URL = '/media/'
-
-# Path where media is stored
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
->>>>>>> e3ce7c4b137250b481571f29ca7a61780b8c1348
