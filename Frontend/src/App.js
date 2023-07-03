@@ -11,6 +11,8 @@ import Auth from './components/Auth/Auth';
 import Google from './components/Auth/Goggle';
 import Facebook from './components/Auth/Facebook';
 import Test from './components/Register/Test';
+import CourseDetails from './components/CourseDetails/CourseDetails';
+import CourseDashboard from './components/CourseDashboard/CourseDashboard';
 function App() {
   const Role = {
     ADMIN:"ADMIN",
@@ -21,6 +23,8 @@ function App() {
     <AuthProvider>
       <Routes>
         {/* public Routes */}
+        <Route path='/course_display' element={<CourseDashboard/>}></Route>
+        <Route path='/course_details' element={<CourseDetails/>}></Route>
         <Route path ='/login' element ={<Login/>}/>
         <Route path ='/register' element = {<Register/>}/>
         <Route path='profile' element={<InstructorProfile></InstructorProfile>}></Route>
