@@ -24,15 +24,14 @@ class QuizSerializer(serializers.ModelSerializer):
 class QuizOptionSerializer(serializers.ModelSerializer):
     class Meta:
         model = QuizOption
-        fields = '__all__'
-
+        fields = ('option_id', 'question', 'option_text', 'is_correct')
 
 class QuizQuestionSerializer(serializers.ModelSerializer):
     options = QuizOptionSerializer(many=True)
 
     class Meta:
         model = QuizQuestion
-        fields = '__all__'
+        fields = ('question_id', 'quiz', 'question_text', 'options')
 
 
 class AssignmentSubmissionSerializer(serializers.ModelSerializer):

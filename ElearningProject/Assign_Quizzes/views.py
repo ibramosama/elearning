@@ -95,8 +95,29 @@ class QuizList(APIView):
     def post(self, request):
         serializer = QuizSerializer(data=request.data)
         if serializer.is_valid():
+            # Check if the user creating the quiz is the instructor of the course
+            if request.user == serializer.validated_data['course'].instructor:
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            else:
+                return Response({"error": "You are not the instructor of this course."},
+                                status=status.HTTP_403_FORBIDDEN)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request):
+        # Get the quiz object to be updated
+        quiz_id = request.data.get('quiz_id')
+        quiz = Quiz.objects.filter(course__instructor=request.user, quiz_id=quiz_id).first()
+        if not quiz:
+            return Response({"error": "Quiz not found or you are not the instructor of this course."},
+                            status=status.HTTP_404_NOT_FOUND)
+
+        # Validate the updated data using the serializer
+        serializer = QuizSerializer(quiz, data=request.data, partial=True)
+        if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -205,3 +226,36 @@ class CertificateView(View):
         response.write(buffer.getvalue())
 
         return response
+
+
+class QuizSubmissionView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        quiz_id = request.data.get('quiz_id')
+        quiz = Quiz.objects.filter(quiz_id=quiz_id).first()
+
+        if not quiz:
+            return Response({"error": "Quiz not found."},
+                            status=status.HTTP_404_NOT_FOUND)
+
+        # Check if the user is enrolled in the course associated with the quiz
+        enrollment = quiz.course.enrollments.filter(user=request.user).first()
+        if not enrollment:
+            return Response({"error": "You are not enrolled in this course."},
+                            status=status.HTTP_403_FORBIDDEN)
+
+        # Check if the quiz submission for the user already exists
+        submission = QuizSubmission.objects.filter(quiz=quiz, user=request.user).first()
+        if submission:
+            return Response({"error": "You have already submitted this quiz."},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        serializer = QuizSubmissionSerializer(data=request.data)
+        if serializer.is_valid():
+            # Set the user and quiz for the submission
+            serializer.validated_data['user'] = request.user
+            serializer.validated_data['quiz'] = quiz
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

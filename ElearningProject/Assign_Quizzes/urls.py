@@ -10,7 +10,7 @@ from .views import (
     AssignmentSubmissionDetail,
     QuizList,
     QuizDetail,
-    CertificateView,
+    CertificateView, QuizSubmissionView,
 )
 
 urlpatterns = [
@@ -25,4 +25,6 @@ urlpatterns = [
 
     # Certificate URL
     path('certificate/', CertificateView.as_view(), name='certificate'),
+    path('quiz-submission/', QuizSubmissionView.as_view(), name='quiz-submission'),
+
 ]
