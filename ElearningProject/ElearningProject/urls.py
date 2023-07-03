@@ -4,7 +4,8 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
-from authentication_app.views import UserRegistrationView, SendOTPView, VerifyOTPView, UserLoginAPIView
+from authentication_app.views import UserRegistrationView, SendOTPView, VerifyOTPView, UserLoginAPIView, \
+    UserPasswordResetConfirmView, UserPasswordResetView, UserProfileUpdateView
 
 from django.contrib import admin
 from django.urls import path, include
@@ -26,6 +27,11 @@ urlpatterns = [
     path('auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('Assign/', include('Assign_Quizzes.urls')),
 
+    path('password/reset/', UserPasswordResetView.as_view(), name='user-password-reset'),
+    path('password/reset/confirm/', UserPasswordResetConfirmView.as_view(), name='user-password-reset-confirm'),
+
+    # User profile update
+    path('profile/update/', UserProfileUpdateView.as_view(), name='user-profile-update'),
 
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
 

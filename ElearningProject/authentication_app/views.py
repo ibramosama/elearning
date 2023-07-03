@@ -1,34 +1,23 @@
 
 from random import randint
+
+from django.contrib.auth.views import PasswordResetConfirmView, PasswordResetView
 from django.contrib.sessions.backends.db import SessionStore
 from django.core.mail import send_mail
 from rest_framework import generics, status, permissions
+from rest_framework.generics import UpdateAPIView
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView
-
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
 from ElearningProject import settings
 from .models import User
-from .serializers import UserSerializer
+from .serializers import UserSerializer, CustomTokenObtainPairSerializer
+from django.urls import reverse
 
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
-
-class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
-    @classmethod
-    def get_token(cls, user):
-        token = super().get_token(user)
-        token['email'] = user.email
-
-        # Add role if the user is an admin, instructor, or student
-        if user.is_staff:
-            token['role'] = 'admin'
-        elif user.is_instructor:
-            token['role'] = 'instructor'
-        elif user.is_student:
-            token['role'] = 'student'
-
-        return token
 
 om_el_otp = 0
 
@@ -85,18 +74,11 @@ class VerifyOTPView(APIView):
 
         return Response(data=data, status=http_status)
 
-
-from django.http import HttpRequest
-
 class UserRegistrationView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [permissions.AllowAny]
 
-    
-
-
-from rest_framework_simplejwt.tokens import RefreshToken
 
 class UserLoginAPIView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
@@ -116,3 +98,61 @@ class UserLoginAPIView(TokenObtainPairView):
             'access': access,
         }, status=status.HTTP_200_OK)
 
+
+class UserPasswordResetView(PasswordResetView):
+    def get_email_context(self, email, user, token, *args, **kwargs):
+        context = super().get_email_context(email, user, token, *args, **kwargs)
+        context['user'] = user
+        context['reset_link'] = self.get_reset_link(user, token)
+        return context
+
+    def get_reset_link(self, user, token):
+        uid = urlsafe_base64_encode(force_bytes(user.pk))
+        reset_url = reverse('user-password-reset-confirm')
+        reset_link = f"{reset_url}?uid={uid}&token={token}"
+        return reset_link
+
+
+class UserPasswordResetConfirmView(PasswordResetConfirmView):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        uid = self.kwargs.get('uidb64')
+        token = self.kwargs.get('token')
+        context['reset_link'] = self.get_reset_link(uid, token)
+        return context
+
+    def get_reset_link(self, uid, token):
+        reset_url = reverse('user-password-reset-confirm')
+        reset_link = f"{reset_url}?uid={uid}&token={token}"
+        return reset_link
+
+
+class UserProfileUpdateView(UpdateAPIView):
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
+
+    def perform_update(self, serializer):
+        serializer.save()
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['request'] = self.request
+        return context
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        if getattr(instance, '_prefetched_objects_cache', None):
+            # If 'prefetch_related' has been applied to a queryset, we need to
+            # forcibly invalidate the prefetch cache on the instance.
+            instance._prefetched_objects_cache = {}
+
+        return Response(serializer.data)
