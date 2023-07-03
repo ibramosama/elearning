@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'sslserver',
     'courses_app.apps.CoursesAppConfig',
-    'Assign_quizzes.apps.AssignQuizzesConfig',
+    "Assign_Quizzes.apps.AssignQuizzesConfig",
 ]
 
 
