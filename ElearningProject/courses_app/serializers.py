@@ -145,15 +145,12 @@ class CourseListSerializer(serializers.ModelSerializer):
         fields = ('id', 'title', 'duration', 'price', 'category', 'course_image', 'description', 'demo')
 
     def get_demo(self, obj):
-        # Retrieve the demo video of the course
-        try:
-            demo_video = obj.videos.filter(demo=True).first()
-            if demo_video:
-                return VideoSerializer(demo_video).data
-            else:
-                return None
-        except Video.DoesNotExist:
-            return None
+        # Retrieve the first video of the course
+        first_video = Video.objects.filter(course=obj.id).first()
+        if first_video:
+            return VideoSerializer(first_video).data
+
+        return None
 
     def get_description(self, obj):
         # Return the description of the course
