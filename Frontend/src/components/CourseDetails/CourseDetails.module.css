@@ -1,0 +1,96 @@
+.title{
+    font-size: 1.5em;
+    width:300px
+}
+.instructor{
+    margin-top: .5em;
+    margin-bottom: .5em;
+    padding-top:.5em ;
+    padding-bottom:.5em;
+
+}
+.instructor_img{
+    width:40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-top: .5em;
+    margin-right: .5em;
+    margin-bottom: .5em;
+}
+.course_date{
+    opacity: .7;
+    font-weight: 300;
+    font-size: .9em;
+}
+.instructor_title{
+    font-weight: bolder;
+    margin: .5em;
+    
+}
+.instructor_or{
+    opacity: .7;
+    font-size: 1.3em;
+    margin-right: .5em;
+}
+.star-rating {
+    line-height:32px;
+    font-size:1.25em;
+  }
+  
+.star-rating .fa-star{color: yellow;}
+
+.course_details{
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+    width:100%;
+    height: fit-content;
+    padding: 1.8em;
+    border-radius: 4px;
+}
+.real_price{
+    color:red;
+    font-size:2em;
+    font-weight: bold;
+}
+.prve_price{
+    text-decoration: line-through;
+    font-weight: 500;
+}
+.icon{
+    font-size: larger;
+    font-weight: 900;
+    color: black;
+    -webkit-text-stroke: 1px;
+}
+.line_details{
+    opacity: .1;
+    /* padding-top:.5em ; */
+    color: rgb(51, 50, 50);
+}
+.mat_include{
+    color: #0071DC;
+    font-weight: bolder;
+    -webkit-text-stroke: 4px;
+}
+.btn_crt{
+    border: none;
+    font-weight: bold;
+}
+.btn_crt:hover{
+    background-color: rgb(252, 227, 35);
+    border: none !important;
+    color:black;
+    font-weight: bold;
+}
+.btn_wish{
+    background-color: #F5F5F5;
+    color:#0071DC;
+    border: none !important;
+    font-weight: bold;
+}
+.btn_wish:hover{
+    color:white;
+    border: none !important;
+    font-weight: bold;
+    background-color:#0071DC ;
+}
+
