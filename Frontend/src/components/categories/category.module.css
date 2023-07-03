@@ -1,0 +1,121 @@
+.course_category {
+    margin-top: 5%;
+  }
+  .course_category .button {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .course_category button {
+    box-shadow: 0px 12px 8px 0px rgb(213 151 96 / 6%);
+    margin-right: 30px;
+    background-color: #fff;
+    color: #000;
+    transition: 0.5s;
+  }
+  .course_category button:hover {
+    background: #f4f4f4;
+    color: #3b4dea;
+  }
+  .course_category button:active {
+    background: #f4f4f4;
+    color: #3b4dea;
+  }
+  .course_category .box {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 10px;
+  }
+  .course_category .box img {
+    width:250px;
+    height: 250px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border-radius: 10px;
+    transition: transform .5s ease;
+    cursor: pointer;
+
+  }
+  .course_category img:hover {
+    transform: scale(1.1); 
+  }
+  .course_category h4 {
+    font-weight: 400;
+    margin-right: 20px;
+    margin-bottom: 3px;
+    color: #000;
+  }
+  .course_category p {
+    color: #000;
+    margin-bottom: 5px;
+  }
+  .course_category p:hover {
+    color: #213be9;
+    margin-bottom: 5px;
+    cursor: pointer;
+
+  }
+  .course_category span {
+    margin-left: 5px;
+    color: crimson;
+  }
+  .course_category h3 {
+    color: #000;
+    font-weight: 200;
+    font-size:15px;
+  }
+  .course_category h3:hover {
+    color: #213be9;
+    font-weight: 200;
+    font-size:15px;
+    cursor: pointer;
+
+  }
+  .course_category label {
+    color: crimson;
+  }
+  @media screen and (max-width: 800px) {
+    .course_category button {
+      margin-bottom: 20px;
+    }
+  }
+
+  
+  .btn1 {
+    padding: 8px 20px;
+    cursor: pointer; 
+    background-color: #fff;
+    border: 1px solid #ccc;
+    margin: 0 5px;
+  }
+  
+  .btn1:hover {
+    background-color: #ededed;
+  }
+  
+  .course_category .content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+  }
+
+  @media (min-width: 768px) {
+    .course_category .content.grid2 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .course_category button {
+        display: inline;
+    } 
+  }
+  
+  @media (min-width: 992px) {
+    .course_category .content.grid2{
+      grid-template-columns: repeat(4, 1fr);
+    }
+    .course_category button {
+        display:inline-block;
+    } 
+  }
+ 
