@@ -28,7 +28,6 @@ class CategoryDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = CategorySerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
-
 class CourseList(generics.ListCreateAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
@@ -43,9 +42,35 @@ class CourseList(generics.ListCreateAPIView):
             # Admin and staff can view all courses
             return Course.objects.all()
 
+        if user.role == 'instructor':
+            # Instructors can view the courses they teach
+            return Course.objects.filter(instructor=user)
+
+        # For other authenticated users, return an empty queryset
+        return Course.objects.none()
+
+
+class CourseviewList(generics.ListAPIView):
+    queryset = Course.objects.all()
+    serializer_class = CourseSerializer
+    permission_classes = [IsCourseApproved]
+
+    def perform_create(self, serializer):
+        serializer.save(instructor=self.request.user)
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.role == 'admin' or user.is_staff:
+            # Admin and staff can view all courses
+            return Course.objects.all()
+
         if user.role == 'student':
             # Students can view the courses they are enrolled in
             return Course.objects.filter(students=user)
+
+        if user.role == 'instructor':
+            # Instructors can view the courses they teach
+            return Course.objects.filter(instructor=user)
 
         # For other authenticated users, return an empty queryset
         return Course.objects.none()
@@ -158,10 +183,9 @@ class VideoDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = VideoSerializer
     permission_classes = [IsInstructorOrReadOnly]
 
-
 class EnrollView(generics.CreateAPIView):
     serializer_class = EnrollmentSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsStudent]
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)

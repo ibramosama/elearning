@@ -9,8 +9,6 @@ from courses_app.models import Course, Assignment, Quiz, Enrollment
 
 User = get_user_model()
 
-
-
 class AssignmentSubmission(models.Model):
     submission_id = models.AutoField(primary_key=True)
     assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE)

@@ -7,13 +7,15 @@ from .views import (
     SectionList,
     SectionDetail,
     VideoList,
-    VideoDetail, ReviewListCreateAPIView, CourseListView, EnrollView, AddToCartView,
+    VideoDetail, ReviewListCreateAPIView, CourseListView, EnrollView, AddToCartView, CourseviewList,
 )
 
 urlpatterns = [
     path('categories/', CategoryList.as_view(), name='category-list'),
     path('categories/<int:pk>/', CategoryDetail.as_view(), name='category-detail'),
     path('courses/', CourseList.as_view(), name='course-list'),
+    path('courses-view/', CourseviewList.as_view(), name='course-list'),
+
     path('courses/<int:pk>/', CourseDetail.as_view(), name='course-detail'),
     path('sections/', SectionList.as_view(), name='sections-list'),
     path('sections/<int:pk>/', SectionDetail.as_view(), name='sections-detail'),

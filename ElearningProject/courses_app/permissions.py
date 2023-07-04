@@ -57,15 +57,24 @@ class IsCourseInstructorOrAdmin(permissions.BasePermission):
             return request.user.role == 'admin' or obj.instructor == request.user
         return False
 
-
 class IsCourseApproved(permissions.BasePermission):
     def has_permission(self, request, view):
         if request.user.is_authenticated:
-            course = view.get_object()
-            return course.is_approved or (request.user.role == 'student' and request.user in course.students.all())
+            if request.user.role == 'admin':
+                return True
+            elif request.user.role == 'student' or request.user.role == 'instructor':
+                return True  # Allow authenticated students and instructors to access the view
         return False
 
-
+    def has_object_permission(self, request, view, obj):
+        if request.user.is_authenticated:
+            if request.user.role == 'admin':
+                return True
+            elif request.user.role == 'student':
+                return obj.is_approved and request.user in obj.students.all()
+            elif request.user.role == 'instructor':
+                return obj.is_approved and request.user == obj.instructor
+        return False
 class IsCourseApprovedOrReadOnly(permissions.BasePermission):
     def has_permission(self, request, view):
         if request.method in permissions.SAFE_METHODS:

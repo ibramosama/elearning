@@ -3,6 +3,7 @@ from wsgiref.util import FileWrapper
 from rest_framework import serializers
 
 from Assign_Quizzes.serializers import AssignmentSerializer, QuizSerializer
+from authentication_app.models import User
 from .models import Category, Course, Section, Video, Review, Cart, Enrollment, Assignment, Quiz
 
 
@@ -32,7 +33,7 @@ class VideoSerializer(serializers.ModelSerializer):
             return super().to_representation(instance)
 
 class SectionSerializer(serializers.ModelSerializer):
-    videos = VideoSerializer(many=True)
+    videos = VideoSerializer(many=True, required=False)
     assignments = AssignmentSerializer(many=True, required=False)
     quizzes = QuizSerializer(many=True, required=False)
 
@@ -63,46 +64,56 @@ class CourseSerializer(serializers.ModelSerializer):
         model = Course
         fields = '__all__'
 
+    students = serializers.SerializerMethodField()
+
+    def get_students(self, instance):
+        enrolled_students = User.objects.filter(enrollment__course=instance)
+        student_names = [student.username for student in enrolled_students]
+        return student_names
+
     def to_representation(self, instance):
+        representation = super().to_representation(instance)
         user = self.context['request'].user
 
-        # Exclude 'is_approved' field for non-instructors during updates
         if self.context['request'].method in ['PUT', 'GET', 'POST']:
             if not user.is_staff and user == instance.instructor:
-                self.fields.pop('is_approved', None)
+                representation.pop('is_approved', None)
 
-        return super().to_representation(instance)
+        return representation
 
     def create(self, validated_data):
         sections_data = validated_data.pop('sections')
-
         category_data = validated_data.pop('category')
         category = Category.objects.get_or_create(**category_data)[0]
         validated_data['category'] = category
 
         # Remove 'is_approved' from validated_data if the user is not an admin
         user = self.context['request'].user
-        if not user.is_staff:
+        if not user.role == 'admin':
             validated_data.pop('is_approved', None)
 
         course = Course.objects.create(**validated_data)
 
         for section_data in sections_data:
-            videos = section_data.pop('videos', [])
-            assignments= section_data.pop('assignments', [])
-            quizzes= section_data.pop('quizzes', [])
+            videos_data = section_data.pop('videos', [])
+            assignments_data = section_data.pop('assignments', [])  # Get assignments data from section_data
+            quizzes_data = section_data.pop('quizzes', [])  # Get quizzes data from section_data
             section = Section.objects.create(course=course, **section_data)
 
-            for video_data in videos:
-                video_data['section'] = section  # Set the section for each video
-                video_data['course_id'] = course.id  # Set the course ID for each video
+            for video_data in videos_data:
+                video_data['section'] = section
+                video_data['course_id'] = course.id
                 video = Video.objects.create(**video_data)
-            for assignments_data in assignments:
-                assignments_data['course_id'] = course.id  # Set the course ID for each video
-                assignment = Assignment.objects.create(**assignments_data)
-            for Quiz_data in quizzes:
-                Quiz_data['course_id'] = course.id  # Set the course ID for each video
-                quiz = Quiz.objects.create(**Quiz_data)
+
+            for assignment_data in assignments_data:
+                assignment_data['section'] = section
+                assignment_data['course'] = course
+                assignment = Assignment.objects.create(**assignment_data)  # Save the Assignment
+
+            for quiz_data in quizzes_data:
+                quiz_data['section'] = section
+                quiz_data['course'] = course
+                quiz = Quiz.objects.create(**quiz_data)  # Save the Quiz
 
         return course
 
@@ -145,6 +156,35 @@ class CourseSerializer(serializers.ModelSerializer):
                                     video.title = video_data.get('title', video.title)
                                     video.save()
 
+                        assignments_data = section_data.get('assignments')
+                        if assignments_data:
+                            existing_assignment_ids = [assignment.id for assignment in section.assignments.all()]
+                            for assignment_data in assignments_data:
+                                assignment_id = assignment_data.get('id')
+                                if assignment_id and assignment_id in existing_assignment_ids:
+                                    assignment = Assignment.objects.get(id=assignment_id)
+                                    assignment.title = assignment_data.get('title', assignment.title)
+                                    assignment.instructions = assignment_data.get('instructions',
+                                                                                  assignment.instructions)
+                                    assignment.deadline_days = assignment_data.get('deadline_days',
+                                                                                   assignment.deadline_days)
+                                    assignment.file = assignment_data.get('file', assignment.file)
+                                    assignment.save()
+
+                        quizzes_data = section_data.get('quizzes')
+                        if quizzes_data:
+                            existing_quiz_ids = [quiz.id for quiz in section.quizzes.all()]
+                            for quiz_data in quizzes_data:
+                                quiz_id = quiz_data.get('id')
+                                if quiz_id and quiz_id in existing_quiz_ids:
+                                    quiz = Quiz.objects.get(id=quiz_id)
+                                    quiz.title = quiz_data.get('title', quiz.title)
+                                    quiz.instructions = quiz_data.get('instructions', quiz.instructions)
+                                    quiz.start_time = quiz_data.get('start_time', quiz.start_time)
+                                    quiz.end_time = quiz_data.get('end_time', quiz.end_time)
+                                    quiz.deadline_days = quiz_data.get('deadline_days', quiz.deadline_days)
+                                    quiz.save()
+
             instance.save()
 
             # Retrieve the updated instance from the database
@@ -154,7 +194,8 @@ class CourseSerializer(serializers.ModelSerializer):
 
         # Check if the user is an admin
         elif user.role == "admin":
-            is_approved = validated_data.get('is_approved', instance.is_approved)  # Use instance.is_approved as default value
+            is_approved = validated_data.get('is_approved',
+                                             instance.is_approved)  # Use instance.is_approved as default value
             if is_approved is not None:
                 instance.is_approved = is_approved
                 instance.save()

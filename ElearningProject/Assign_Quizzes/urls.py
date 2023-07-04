@@ -10,7 +10,8 @@ from .views import (
     AssignmentSubmissionDetail,
     QuizList,
     QuizDetail,
-    CertificateView, QuizSubmissionView,
+    CertificateView, QuizSubmissionView, QuizQuestionListCreateView, QuizQuestionRetrieveUpdateDestroyView,
+    QuizOptionListCreateView, QuizOptionRetrieveUpdateDestroyView,
 )
 
 urlpatterns = [
@@ -22,6 +23,10 @@ urlpatterns = [
     # Quiz URLs
     path('quizzes/', QuizList.as_view(), name='quiz-list'),
     path('quizzes/<int:quiz_id>/', QuizDetail.as_view(), name='quiz-detail'),
+    path('quiz-questions/', QuizQuestionListCreateView.as_view(), name='quiz-question-list'),
+    path('quiz-questions/<int:pk>/', QuizQuestionRetrieveUpdateDestroyView.as_view(), name='quiz-question-detail'),
+    path('quiz-options/', QuizOptionListCreateView.as_view(), name='quiz-option-list'),
+    path('quiz-options/<int:pk>/', QuizOptionRetrieveUpdateDestroyView.as_view(), name='quiz-option-detail'),
 
     # Certificate URL
     path('certificate/', CertificateView.as_view(), name='certificate'),

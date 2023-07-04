@@ -36,12 +36,19 @@ class Course(models.Model):
         return self.title
 
 
+class Section(models.Model):
+    section = models.CharField(max_length=100)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='sections')
+
+    def __str__(self):
+        return self.section
 class Assignment(models.Model):
-    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='Assignment')
     title = models.CharField(max_length=255)
     instructions = models.TextField()
     deadline_days = models.PositiveIntegerField()
     file = models.FileField(upload_to='assignments/', null=True, blank=True)
+    section = models.ForeignKey(Section, on_delete=models.CASCADE, related_name='Assignment')
 
     def deadline(self, request):
         user = request.user
@@ -55,27 +62,16 @@ class Assignment(models.Model):
     def __str__(self):
         return self.title
 
-    def save(self, *args, **kwargs):
-        request = kwargs.pop('request', None)  # Get the request object if passed
-        if request and request.user.is_authenticated and request.user.role == "student":
-            enrollment = Enrollment.objects.filter(user=self.user, course=self.assignment.course).first()
-            if enrollment:
-                if not self.is_completed and datetime.now() <= self.assignment.deadline:
-                    if self.grade is not None and self.grade >= 70:
-                        self.is_completed = True
-                        super().save(*args, **kwargs)
-                    else:
-                        self.is_completed = False
-
 
 
 class Quiz(models.Model):
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='course_quizzes')
     title = models.CharField(max_length=255)
     instructions = models.TextField()
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
     deadline_days = models.PositiveIntegerField()
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='course_quizzes')
+    section = models.ForeignKey(Section, on_delete=models.CASCADE, related_name='course_quizzes')
 
     def deadline(self, request):
         user = request.user
@@ -86,14 +82,6 @@ class Quiz(models.Model):
                 return deadline_date.date()
         return None
 
-    def save(self, *args, **kwargs):
-
-        if not self.is_completed and datetime.now() <= self.quiz.deadline:
-            if self.score is not None and self.score >= 70:
-                self.is_completed = True
-                super().save(*args, **kwargs)
-            else:
-                self.is_completed = False
 
 
 class Enrollment(models.Model):
@@ -117,12 +105,6 @@ class Cart(models.Model):
         return sum(course.price for course in self.courses.all())
 
 
-class Section(models.Model):
-    section = models.CharField(max_length=100)
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='sections')
-
-    def __str__(self):
-        return self.section
 
 
 class Video(models.Model):

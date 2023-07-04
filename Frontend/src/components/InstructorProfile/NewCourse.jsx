@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-
+import './NewCourse.css'
 const CreateCourseForm = () => {
   const [formData, setFormData] = useState({
     title: '',
@@ -111,7 +111,9 @@ const CreateCourseForm = () => {
 
     try {
       await axios.post('http://localhost:8000/course/courses/', formDataToSend, {
-        headers: { 'Content-Type': 'multipart/form-data' },
+        headers: { 'Content-Type': 'multipart/form-data' ,
+        'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg4NDU1ODYyLCJpYXQiOjE2ODg0Mzc4NjIsImp0aSI6IjY4N2FiMTk3ZThiYzRlOGZhYTVkZDFjYWE5NzFlOTQwIiwidXNlcl9pZCI6MSwiZW1haWwiOiJpYnJhbS5vc2FtYTE3QGdtYWlsLmNvbSIsInJvbGUiOiJpbnN0cnVjdG9yIn0.S1FHG7VGXnt5w3ImIfL3hWOcZ0G-pUuSffER-YJkycU',
+      },
       });
       // Course created successfully, perform any desired actions
     } catch (error) {
