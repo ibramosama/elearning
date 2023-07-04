@@ -220,7 +220,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'Elearning',
         'USER': 'postgres',
-        'PASSWORD': 'sodium',
+        'PASSWORD': 'moon',
         'HOST': '',
         'PORT': '5432',
     }

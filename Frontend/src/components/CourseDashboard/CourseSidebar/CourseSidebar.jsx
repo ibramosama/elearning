@@ -1,47 +1,78 @@
-import sidebarStyle from './CourseSidebar.css';
+import sidebarStyle from './CourseSidebar.module.css';
+import { Link } from "react-router-dom";
+import React, { useRef ,useState,useEffect } from "react";
+import DisplayVideo from './../DisplayVideo/DisplayVideo';
+import {get_course_data} from '../../../services/course_display.service'
 
-import React, { useRef ,useState } from "react";
 
 function CourseSidebar() {
-    const [isOpen, setIsopen] = useState(false);
+    let [course_data,Set_course_data] =useState({})
+    let [current_video,Set_current_video] =useState({})
+    const mySidebar = useRef(null);
+    const main = useRef(null);
+    const openNav = () => {
+        mySidebar.current.style.width = "350px";
+        main.current.style.marginLeft = "350px";
+    };
 
-    const ToggleSidebar = () => {
-        isOpen === true ? setIsopen(false) : setIsopen(true);
+    const closeNav = () => {
+        mySidebar.current.style.width = "0";
+        main.current.style.marginLeft = "0";
+    };
+    useEffect(()=>{
+        get_course_data(7).then((data)=>{
+            Set_course_data(data)
+            console.log(data)
+        })
+
+    },[])
+    const HandleChangeVideo =(video)=>{
+        Set_current_video(video)
     }
     return ( 
-        <div className="container-fluid mt-3">
-                
-            <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-md">
-                <div className="container-fluid p-2">
-                    <a className="navbar-brand text-primary mr-0">Company Logo</a>
-                    <div className="form-inline ml-auto">
-                        <div className="btn btn-primary" onClick={ToggleSidebar} >
-                            <i className="fa fa-bars"></i>
-                        </div>
-                    </div>
-                </div>
-            </nav>
-            <div className={`sidebar ${isOpen == true ? 'active' : ''}`}>
-                <div className="sd-header">
-                    <h4 className="mb-0">Sidebar Header</h4>
-                    <div className="btn btn-primary" onClick={ToggleSidebar}><i className="fa fa-times"></i></div>
-                </div>
-                <div className="sd-body">
-                    <ul>
-                        <li><a className="sd-link">Menu Item 1</a></li>
-                        <li><a className="sd-link">Menu Item 2</a></li>
-                        <li><a className="sd-link">Menu Item 3</a></li>
-                        <li><a className="sd-link">Menu Item 4</a></li>
-                        <li><a className="sd-link">Menu Item 5</a></li>
-                        <li><a className="sd-link">Menu Item 6</a></li>
-                        <li><a className="sd-link">Menu Item 7</a></li>
-                        <li><a className="sd-link">Menu Item 8</a></li>
-                    </ul>
-                </div>
+    <div>
+        <div ref={mySidebar} className={`${sidebarStyle.sidebar} `}>
+            <a href="#" className={`${sidebarStyle.closebtn}`} onClick={closeNav}>
+                <i class="bi bi-x-circle"></i>
+            </a>
+            <div className={`${sidebarStyle.title}`}>
+                Curriculum
             </div>
-            <div className={`sidebar-overlay ${isOpen == true ? 'active' : ''}`} onClick={ToggleSidebar}></div>
+            {
+                course_data?.sections?.map((section,key)=>(
+                    <div className='me-4 ms-4' key={key}>
+                        <button className={`${sidebarStyle.btn_section} mt-3 rounded`} type="button" data-bs-toggle="collapse" data-bs-target={`#collapseExample${key}`} aria-expanded="false" aria-controls={`collapseExample${key}`}>
+                            <div className='d-flex align-items-center'>
+                                <i class="bi bi-caret-right-fill me-3 fs-3"></i> {section?.section}   
+                            </div>
+                        </button>
+                        <hr className={`${sidebarStyle.line_section}`}></hr>
+                        {section?.videos?.map((video)=>(
+                            <div class={`collapse ${ key == 0 ? 'show' :'' }`} id={`collapseExample${key}`}>
+                                <li class="list-group-item" onClick={() => HandleChangeVideo(video)} >
+                                    <div className='d-flex align-items-center'>
+                                    <i class="bi bi-play-circle me-3 fs-3"></i> 
+                                        {video?.title}
+                                    </div>          
+                                </li>
+                            </div>
+                        ))}
+                        
+                    </div>
+
+                    
+                ))
+            }
+                        
         </div>
-        
+
+        <div ref={main} id={`${sidebarStyle.main}`}>
+            <button className={`${sidebarStyle.openbtn}`} onClick={openNav}>
+            ☰ 
+            </button>
+            <DisplayVideo video={current_video}></DisplayVideo>
+        </div>
+    </div>
     );
 }
 

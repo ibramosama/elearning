@@ -4,7 +4,7 @@ import CourseSections from './CourseSections/CourseSections';
 import CourseOverview from './CourseOverview/CourseOverview'
 import React, { useState } from "react";
 
-function CourseDetailsMiniHeader() {
+function CourseDetailsMiniHeader(props) {
     const [showOverview, setShowOverview] = useState(true);
     const [showCurriculum, setShowCurriculum] = useState(false);
     const [showInstructor, setShowInstructor] = useState(false);
@@ -40,9 +40,9 @@ function CourseDetailsMiniHeader() {
                 class="btn btn-light ms-3 me-3">Instructor</button>
             </div>
             <div className='mt-4'>
-                {showOverview   && <CourseOverview></CourseOverview>}
-                {showCurriculum && <CourseSections></CourseSections>}
-                {showInstructor && <CourseInstructor></CourseInstructor>}
+                {showOverview   && <CourseOverview data= {props.data}></CourseOverview>}
+                {showCurriculum && <CourseSections data= {props.data}></CourseSections>}
+                {showInstructor && <CourseInstructor data= {props.data}></CourseInstructor>}
             </div>
         </div>
         

@@ -3,6 +3,7 @@ function CourseDashboard() {
     return ( 
         <div>
             <CourseSidebar></CourseSidebar>
+            
         </div>
     );
 }

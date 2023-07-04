@@ -15,16 +15,16 @@ import CourseDetails from './components/CourseDetails/CourseDetails';
 import CourseDashboard from './components/CourseDashboard/CourseDashboard';
 function App() {
   const Role = {
-    ADMIN:"ADMIN",
-    STUDENT:"STUDENT",
-    INSTRUCTOR:"INSTRUCTOR"
+    ADMIN:"admin",
+    STUDENT:"student",
+    INSTRUCTOR:"instructor"
   }
   return (
     <AuthProvider>
       <Routes>
         {/* public Routes */}
         <Route path='/course_display' element={<CourseDashboard/>}></Route>
-        <Route path='/course_details' element={<CourseDetails/>}></Route>
+        <Route path='/course_details/:id' element={<CourseDetails/>}></Route>
         <Route path ='/login' element ={<Login/>}/>
         <Route path ='/register' element = {<Register/>}/>
         <Route path='profile' element={<InstructorProfile></InstructorProfile>}></Route>
@@ -43,9 +43,11 @@ function App() {
           <Route path='/student' element={<Home/>}/>
         </Route>
         <Route path = '/test' element = {<Test/>}/>
-        <Route path="*" element={<NotFoundPage />} />
         <Route path="/Google" element={<Google/>}/>
         <Route path="/Facebook" element={<Facebook/>}/>
+        <Route path="/notFound" element = {<NotFoundPage></NotFoundPage>}/>
+        <Route path="*" element={<NotFoundPage />} />
+
       </Routes>
     </AuthProvider>
   );

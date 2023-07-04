@@ -1,6 +1,11 @@
+
+import { HomeBanner } from './../HomeBanner/HomeBanner';
+import {Banner} from '../banner/Banner';
+import Nav from '../Navigation/Nav';
 function Home() {
     return ( <div>
-        Home page 
+        <HomeBanner></HomeBanner>
+        <Banner></Banner>
     </div> );
 }
 

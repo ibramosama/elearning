@@ -30,6 +30,7 @@ class Course(models.Model):
     is_approved = models.BooleanField(default=False)
     description = models.CharField(null=True, blank=True)
     level = models.CharField(max_length=20, choices=LEVEL_CHOICES)
+    
 
     def __str__(self):
         return self.title

@@ -135,25 +135,41 @@ class ReviewSerializer(serializers.ModelSerializer):
         model = Review
         fields = ('id', 'course', 'user', 'rating', 'comment')
 
-
 class CourseListSerializer(serializers.ModelSerializer):
     demo = serializers.SerializerMethodField()
     description = serializers.SerializerMethodField()
-
+    sections=serializers.SerializerMethodField()
+    category =serializers.ReadOnlyField(source='category.name')
     class Meta:
         model = Course
-        fields = ('id', 'title', 'duration', 'price', 'category', 'course_image', 'description', 'demo')
-
+        fields = ('id', 'title', 'duration', 'price', 'category', 'course_image', 'description', 'demo','sections','level')
+    
+    # def get_category(self,obj):
+    #     category = Category.objects.get(pk=obj.)
+    #     return category
+    def get_sections(self, obj):
+        sections = Section.objects.filter(course=obj.id).all()
+        section_data = []
+        for section in sections:
+            videos = section.videos.all()
+            video_titles = [video.title for video in videos]
+            section_data.append({
+                'section': section.section,
+                'videos': video_titles
+            })
+        return section_data
     def get_demo(self, obj):
-        # Retrieve the demo video of the course
-        try:
-            demo_video = obj.videos.filter(demo=True).first()
-            if demo_video:
-                return VideoSerializer(demo_video).data
-            else:
-                return None
-        except Video.DoesNotExist:
-            return None
+        # Retrieve the first video of the course
+        
+        first_video = Video.objects.filter(course=obj.id).first()
+        if first_video:
+            request = self.context.get('request')
+            video_url = first_video.video.url
+            if request is not None:
+                return request.build_absolute_uri(video_url)
+            return video_url
+
+        return None
 
     def get_description(self, obj):
         # Return the description of the course

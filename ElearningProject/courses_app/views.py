@@ -39,6 +39,8 @@ class CourseList(generics.ListCreateAPIView):
 
     def get_queryset(self):
         user = self.request.user
+        print(self)
+        print(user)
         if user.role == 'admin' or user.is_staff:
             # Admin and staff can view all courses
             return Course.objects.all()
@@ -107,12 +109,20 @@ class ReviewListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = ReviewSerializer
     permission_classes = [IsReviewOwnerOrReadOnly]
 
-class CourseListView(generics.ListAPIView):
+class CourseListView(generics.ListAPIView,generics.RetrieveAPIView):
+    
     queryset = Course.objects.filter(is_approved=True)
     serializer_class = CourseListSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
     filter_backends = [filters.SearchFilter]
     search_fields = ['title']
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        course_id = self.kwargs.get('pk')
+        if course_id is not None:
+            queryset = queryset.filter(id=course_id)
+        return queryset
+    
 
 class AddToCartView(generics.CreateAPIView):
     serializer_class = CartSerializer
@@ -146,7 +156,7 @@ class VideoList(generics.ListCreateAPIView):
         return Video.objects.none()
 
 
-class VideoDetail(generics.RetrieveUpdateDestroyAPIView):
+class VideoDetail(generics.ListAPIView,generics.RetrieveUpdateDestroyAPIView):
     queryset = Video.objects.all()
     serializer_class = VideoSerializer
     permission_classes = [IsCourseApproved]

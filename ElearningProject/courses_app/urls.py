@@ -21,6 +21,8 @@ urlpatterns = [
     path('videos/<int:pk>/', VideoDetail.as_view(), name='video-detail'),
     path('reviews/', ReviewListCreateAPIView.as_view(), name='review-list-create'),
     path('course-list/', CourseListView.as_view(), name='course-list-view'),
+    path('course-list/<int:pk>', CourseListView.as_view(), name='course-list-one-view'),
+    
     path('enrollments/', EnrollView.as_view(), name='enrollments'),
     path('add-to-cart/', AddToCartView.as_view(), name='add-to-cart'),
 ]
