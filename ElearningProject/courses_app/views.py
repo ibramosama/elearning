@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework import generics, permissions, status, filters
 from .models import Category, Course, Section, Video, Review, Cart
 from .serializers import CategorySerializer, CourseSerializer, SectionSerializer, VideoSerializer, ReviewSerializer, \
-    CourseListSerializer, CartSerializer, EnrollmentSerializer
+    CourseListSerializer, CartSerializer, EnrollmentSerializer, CourseFieldsSerializer
 from .permissions import (
     IsInstructor,
     IsAdmin,
@@ -51,6 +51,12 @@ class CourseList(generics.ListCreateAPIView):
         # For other authenticated users, return an empty queryset
         return Course.objects.none()
 
+class CourseByCategoryList(generics.ListAPIView):
+    serializer_class = CourseFieldsSerializer
+
+    def get_queryset(self):
+        category_id = self.kwargs['category_id']
+        return Course.objects.filter(category_id=category_id)
 
 class CourseviewList(generics.ListAPIView):
     queryset = Course.objects.all()

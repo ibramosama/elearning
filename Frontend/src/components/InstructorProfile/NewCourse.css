@@ -1,134 +1,151 @@
-.create-course-form {
-    max-width: 600px;
+.container {
+    max-width: 800px;
     margin: 0 auto;
     padding: 20px;
-    background-color: #f5f5f5;
-    border-radius: 5px;
   }
   
-  .create-course-form h2 {
-    font-size: 24px;
+  .form-group {
     margin-bottom: 20px;
   }
   
-  .create-course-form form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .create-course-form .form-group {
-    margin-bottom: 20px;
-  }
-  
-  .create-course-form label {
-    font-size: 18px;
+  .form-group label {
+    display: block;
+    font-weight: bold;
     margin-bottom: 5px;
   }
   
-  .create-course-form input,
-  .create-course-form textarea,
-  .create-course-form button {
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  .create-course-form input[type="file"] {
-    padding: 5px 10px;
-  }
-  
-  .create-course-form button {
-    background-color: #007bff;
-    color: #fff;
-    cursor: pointer;
-  }
-  
-  .create-course-form button:hover {
-    background-color: #0056b3;
-  }
-  
-  .create-course-form button[type="submit"] {
-    background-color: #28a745;
-  }
-  
-  .create-course-form button[type="submit"]:hover {
-    background-color: #1e7e34;
-  }
-  
-  .create-course-form .section-wrapper {
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-  }
-  
-  .create-course-form .section-wrapper:last-child {
-    margin-bottom: 0;
-  }
-  
-  .create-course-form .video-wrapper,
-  .create-course-form .assignment-wrapper,
-  .create-course-form .quiz-wrapper {
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-  }
-  
-  .create-course-form .video-wrapper:last-child,
-  .create-course-form .assignment-wrapper:last-child,
-  .create-course-form .quiz-wrapper:last-child {
-    margin-bottom: 0;
-  }
-  
-  .create-course-form .video-wrapper input,
-  .create-course-form .assignment-wrapper input,
-  .create-course-form .quiz-wrapper input,
-  .create-course-form .video-wrapper textarea,
-  .create-course-form .assignment-wrapper textarea,
-  .create-course-form .quiz-wrapper textarea {
+  .form-group input[type="text"],
+  .form-group input[type="number"],
+  .form-group textarea {
     width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  
+  .form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    appearance: none;
+    background-color: white;
+    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path d='M6 10.5L1.5 6 6 1.5 10.5 6z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 8px 8px;
+    padding-right: 30px;
+  }
+  
+  .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .btn:hover {
+    background-color: #45a049;
+  }
+  
+  .btn-add {
+    background-color: #2196f3;
+    margin-left: 10px;
+  }
+  
+  .btn-add:hover {
+    background-color: #1e88e5;
+  }
+  
+  .section {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .section-title {
+    font-size: 18px;
+    font-weight: bold;
     margin-bottom: 10px;
   }
   
-  .create-course-form .video-wrapper input[type="file"] {
-    padding: 5px 10px;
+  .section-field {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
   }
   
-  .create-course-form .video-wrapper button,
-  .create-course-form .assignment-wrapper button,
-  .create-course-form .quiz-wrapper button {
-    background-color: #dc3545;
-    color: #fff;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
+  .section-field label {
+    margin-right: 10px;
+  }
+  
+  .section-field input[type="text"],
+  .section-field input[type="number"] {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
     font-size: 14px;
   }
   
-  .create-course-form .video-wrapper button:hover,
-  .create-course-form .assignment-wrapper button:hover,
-  .create-course-form .quiz-wrapper button:hover {
-    background-color: #bd2130;
+  .section-field .btn-add {
+    margin-left: 10px;
   }
   
-  .create-course-form .add-section-button,
-  .create-course-form .add-video-button,
-  .create-course-form .add-assignment-button,
-  .create-course-form .add-quiz-button {
-    background-color: #17a2b8;
-    color: #fff;
-    border: none;
-    padding: 10px;
+  .video-list,
+  .assignment-list,
+  .quiz-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .video-item,
+  .assignment-item,
+  .quiz-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .video-item .video-file,
+  .assignment-item .assignment-file,
+  .quiz-item .quiz-file {
+    display: inline-block;
+    width: 180px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .video-item .btn-delete,
+  .assignment-item .btn-delete,
+  .quiz-item .btn-delete {
+    margin-left: 10px;
+  }
+  
+  .file-input {
+    display: none;
+  }
+  
+  .file-input-label {
+    display: inline-block;
+    padding: 8px 12px;
+    background-color: #2196f3;
+    color: white;
+    border-radius: 4px;
+    font-size: 14px;
     cursor: pointer;
-    font-size: 16px;
   }
   
-  .create-course-form .add-section-button:hover,
-  .create-course-form .add-video-button:hover,
-  .create-course-form .add-assignment-button:hover,
-  .create-course-form .add-quiz-button:hover {
-    background-color: #138496;
+  .file-input-label:hover {
+    background-color: #1e88e5;
   }
   
