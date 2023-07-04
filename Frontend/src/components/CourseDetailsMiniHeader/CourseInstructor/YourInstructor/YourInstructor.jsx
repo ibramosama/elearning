@@ -5,13 +5,6 @@ import { faVideo, faEnvelope, faUser, faPlus  } from '@fortawesome/free-solid-sv
 const YourInstructor = () => {
   return (
     <div className={styles.page}>
-      <nav className={styles.navBar}>
-        <ul className={styles.navList}>
-          <li className={`${styles.navItem} ${styles.active}`}>Instructors</li>
-          <li className={styles.navItem}>Curriculum</li>
-          <li className={styles.navItem}>Overview</li>
-        </ul>
-      </nav>
       <div className={styles.content}>
         <h3>Your Instructor</h3>
         <div className={styles.instructorInfo}>

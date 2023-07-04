@@ -13,6 +13,7 @@ import Facebook from './components/Auth/Facebook';
 import Test from './components/Register/Test';
 import CourseDetails from './components/CourseDetails/CourseDetails';
 import CourseDashboard from './components/CourseDashboard/CourseDashboard';
+import CourseByCategory from './components/Home/CourseByCategory/CourseByCategory';
 function App() {
   const Role = {
     ADMIN:"admin",
@@ -23,6 +24,7 @@ function App() {
     <AuthProvider>
       <Routes>
         {/* public Routes */}
+        <Route path='/category/:id' element={<CourseByCategory/>}></Route>
         <Route path='/course_display' element={<CourseDashboard/>}></Route>
         <Route path='/course_details/:id' element={<CourseDetails/>}></Route>
         <Route path ='/login' element ={<Login/>}/>

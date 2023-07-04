@@ -1,0 +1,22 @@
+
+.title{
+    font-weight: 700;
+    font-size: 1.5em;
+    opacity: .8;
+}
+.cat_item{
+    background-color:#e5f1fb ;
+    border-radius: 3px;
+    margin-right: 1.5em;
+    margin-top: 1.5em;
+    cursor: pointer;
+    padding:1.3em;
+    font-weight: 500;
+    opacity: .8;
+    width:300px;
+    text-align: center;
+}
+.cat_item:hover{
+    background-color:#0071DC ;
+    color:#f9f9f9
+}

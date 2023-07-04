@@ -1,5 +1,7 @@
 .mini_header{
     background-color:#F2F2F2 ;
     padding: .7em;
-
+}
+.mini_header_button{
+    margin-bottom: 0;
 }

@@ -12,19 +12,19 @@ function CourseOverview(props) {
                 </h4>
                 <div className='ms-4 d-flex flex-wrap'>
                     <div className='w-50 d-flex mt-4 mb-3'>
-                        <i class={`${overviewStyle.lerning_obj_icon} bi bi-check-circle me-3`}></i>
+                        <i className={`${overviewStyle.lerning_obj_icon} bi bi-check-circle me-3`}></i>
                         <div>
                             Ready to begin working on real-world data modeling projects,
                         </div>
                     </div>
                     <div className='w-50 d-flex mt-4 mb-3'>
-                        <i class={`${overviewStyle.lerning_obj_icon} bi bi-check-circle me-3`}></i>
+                        <i className={`${overviewStyle.lerning_obj_icon} bi bi-check-circle me-3`}></i>
                         <div>
                             Ready to begin working on real-world data modeling projects,
                         </div>
                     </div>
                     <div className='w-50 d-flex'>
-                        <i class={`${overviewStyle.lerning_obj_icon} bi bi-check-circle me-3`}></i>
+                        <i className={`${overviewStyle.lerning_obj_icon} bi bi-check-circle me-3`}></i>
                         <div>
                             Ready to begin working on real-world data modeling projects,
                         </div>

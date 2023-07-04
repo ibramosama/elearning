@@ -1,20 +1,37 @@
-
+import  {getAllCategories}  from '../../services/category.service';
 import categoryStyle from './CourseCategory.module.css'
+import { useState ,useEffect } from 'react';
+import{NavLink ,useNavigate} from 'react-router-dom';
 function CourseCategory() {
+    let [Categories ,setCategories] =useState([])
+    const navigate = useNavigate()
+    useEffect(() => {
+        getAllCategories().then((cat)=>{
+            if (cat != 404){
+                setCategories(cat)
+            }else{
+                setCategories([])
+            }
+        })
+    },[])
+
+    const courseRelatedCategories=(id)=>{
+        navigate('/home')
+    }
     return ( 
         <div className={`${categoryStyle.course_category} mt-4 mb-4`}>
             <h4>Category</h4>
             <div className='fs-5 mt-3 lh-lg'>
-                <div>Art & Design</div>
-                <div>Business</div>
-                <div>Data Science</div>
-                <div>Development</div>
-                <div>Finance</div>
-                <div>Health & Fitness</div>
-                <div>Lifestyle</div>
-                <div>Marketing</div>
-                <div>Music</div>
-                <div>Personal Development</div>
+                {
+                    Categories.map((cat,key)=>(
+                        
+                        <div className={`${categoryStyle.categry_course}`} 
+                        onClick={()=>(courseRelatedCategories(key))} 
+                        key={key}>{cat.name}</div>
+                        
+                        
+                    ))
+                }
             </div>
         </div>
     );

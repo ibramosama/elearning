@@ -1,7 +1,8 @@
+
 function CourseInstructor() {
     return ( 
         <div>
-            instudctoe
+            
         </div>
     );
 }
