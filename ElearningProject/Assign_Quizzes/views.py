@@ -161,21 +161,19 @@ from datetime import datetime
 
 
 def meets_certificate_criteria(user, course):
-    # Check if the user has a passing grade (>= 70%) for all assignments and quizzes in the course
-    assignments = AssignmentSubmission.objects.filter(user=user, assignment__course=course)
-    quizzes = QuizSubmission.objects.filter(user=user, quiz__course=course)
-
+    # Check if all assignments are completed
+    assignments = Assignment.objects.filter(course=course)
     for assignment in assignments:
-        if assignment.grade is None or assignment.grade < 70:
+        submission = AssignmentSubmission.objects.filter(user=user, assignment=assignment).first()
+        if not submission or not submission.is_completed:
             return False
 
+    # Check if all quizzes are completed
+    quizzes = Quiz.objects.filter(course=course)
     for quiz in quizzes:
-        if quiz.score is None or quiz.score < 70:
+        submission = QuizSubmission.objects.filter(user=user, quiz=quiz).first()
+        if not submission or not submission.is_completed:
             return False
-
-    # Check if the user has met the deadline
-    if datetime.now().date() > course.deadline:
-        return False
 
     return True
 
@@ -259,3 +257,22 @@ class QuizSubmissionView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class QuizQuestionListCreateView(generics.ListCreateAPIView):
+    queryset = QuizQuestion.objects.all()
+    serializer_class = QuizQuestionSerializer
+
+
+class QuizQuestionRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = QuizQuestion.objects.all()
+    serializer_class = QuizQuestionSerializer
+
+
+class QuizOptionListCreateView(generics.ListCreateAPIView):
+    queryset = QuizOption.objects.all()
+    serializer_class = QuizOptionSerializer
+
+
+class QuizOptionRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = QuizOption.objects.all()
+    serializer_class = QuizOptionSerializer

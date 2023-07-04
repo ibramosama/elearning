@@ -13,6 +13,7 @@ import Facebook from './components/Auth/Facebook';
 import Test from './components/Register/Test';
 import CourseDetails from './components/CourseDetails/CourseDetails';
 import CourseDashboard from './components/CourseDashboard/CourseDashboard';
+import NewCourse from './components/InstructorProfile/NewCourse'
 import CourseByCategory from './components/Home/CourseByCategory/CourseByCategory';
 function App() {
   const Role = {
@@ -40,6 +41,7 @@ function App() {
         <Route element={<Auth allowedRoles={[Role.INSTRUCTOR]}/>}>
           <Route path = '/instructor' element = {<Home/>}/>
         </Route>
+        <Route path ='/createCourse' element={ <NewCourse/>}></Route>
         {/* student Routes */}
         <Route element={<Auth allowedRoles={[Role.STUDENT]}/>}>
           <Route path='/student' element={<Home/>}/>

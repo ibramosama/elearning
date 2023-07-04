@@ -11,13 +11,14 @@ User = get_user_model()
 class AssignmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Assignment
-        fields = ('title', 'instructions', 'deadline_days', 'file')
+        fields = ('id', 'title', 'instructions', 'deadline_days', 'file')
 
 
 class QuizSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Quiz
-        fields = ('title','instructions','start_time', 'end_time', 'deadline_days')
+        fields = ('id', 'title','instructions','start_time', 'end_time', 'deadline_days')
 
 
 

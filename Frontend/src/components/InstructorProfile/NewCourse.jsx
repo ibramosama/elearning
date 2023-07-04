@@ -1,263 +1,193 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 
 const CreateCourseForm = () => {
-  const [formData, setFormData] = useState({
-    title: '',
-    duration: '',
-    price: '',
-    category: '',
-    courseImage: null,
-    sections: [],
-    // Add other fields as needed
-  });
+  const [sections, setSections] = useState([{ section: '', videos: [], assignments: [], quizzes: [] }]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  const handleInputChange = (index, event) => {
+    const { name, value } = event.target;
+    const updatedSections = [...sections];
+    updatedSections[index] = { ...updatedSections[index], [name]: value };
+    setSections(updatedSections);
+  };
+  
+
+  const handleVideoChange = (sectionIndex, videoIndex, event) => {
+    const { name, value } = event.target;
+    const updatedSections = [...sections];
+    updatedSections[sectionIndex].videos[videoIndex][name] = value;
+    setSections(updatedSections);
   };
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    setFormData((prevData) => ({ ...prevData, courseImage: file }));
+  const handleAssignmentChange = (sectionIndex, assignmentIndex, event) => {
+    const { name, value } = event.target;
+    const updatedSections = [...sections];
+    updatedSections[sectionIndex].assignments[assignmentIndex][name] = value;
+    setSections(updatedSections);
   };
 
-  const handleSectionChange = (e, index) => {
-    const { name, value } = e.target;
-    const sections = [...formData.sections];
-    sections[index] = { ...sections[index], [name]: value };
-    setFormData((prevData) => ({ ...prevData, sections }));
+  const handleQuizChange = (sectionIndex, quizIndex, event) => {
+    const { name, value } = event.target;
+    const updatedSections = [...sections];
+    updatedSections[sectionIndex].quizzes[quizIndex][name] = value;
+    setSections(updatedSections);
   };
 
   const handleAddSection = () => {
-    setFormData((prevData) => ({
-      ...prevData,
-      sections: [...prevData.sections, { section: '', videos: [], assignments: [], quizzes: [] }],
-    }));
+    setSections([...sections, { section: '', videos: [], assignments: [], quizzes: [] }]);
   };
 
-  const handleVideoChange = (e, sectionIndex, videoIndex) => {
-    const { name, value } = e.target;
-    const sections = [...formData.sections];
-    const videos = [...sections[sectionIndex].videos];
-    videos[videoIndex] = { ...videos[videoIndex], [name]: value };
-    sections[sectionIndex].videos = videos;
-    setFormData((prevData) => ({ ...prevData, sections }));
+  const handleRemoveSection = (index) => {
+    const updatedSections = [...sections];
+    updatedSections.splice(index, 1);
+    setSections(updatedSections);
   };
 
   const handleAddVideo = (sectionIndex) => {
-    const sections = [...formData.sections];
-    sections[sectionIndex].videos.push({ title: '', video: null });
-    setFormData((prevData) => ({ ...prevData, sections }));
+    const updatedSections = [...sections];
+    updatedSections[sectionIndex].videos.push({ title: '', video: '' });
+    setSections(updatedSections);
   };
 
-  const handleAssignmentChange = (e, sectionIndex, assignmentIndex) => {
-    const { name, value } = e.target;
-    const sections = [...formData.sections];
-    const assignments = [...sections[sectionIndex].assignments];
-    assignments[assignmentIndex] = { ...assignments[assignmentIndex], [name]: value };
-    sections[sectionIndex].assignments = assignments;
-    setFormData((prevData) => ({ ...prevData, sections }));
+  const handleRemoveVideo = (sectionIndex, videoIndex) => {
+    const updatedSections = [...sections];
+    updatedSections[sectionIndex].videos.splice(videoIndex, 1);
+    setSections(updatedSections);
+  };
+
+  const handleVideoFileChange = (sectionIndex, videoIndex, event) => {
+    const files = event.target.files;
+    const updatedSections = [...sections];
+
+    if (files && files.length > 0) {
+      const videoFile = files[0];
+      updatedSections[sectionIndex].videos[videoIndex].videoFile = videoFile;
+    } else {
+      updatedSections[sectionIndex].videos[videoIndex].videoFile = null;
+    }
+
+    setSections(updatedSections);
   };
 
   const handleAddAssignment = (sectionIndex) => {
-    const sections = [...formData.sections];
-    sections[sectionIndex].assignments.push({ title: '', instructions: '', file: null });
-    setFormData((prevData) => ({ ...prevData, sections }));
+    const updatedSections = [...sections];
+    updatedSections[sectionIndex].assignments.push({ title: '', instructions: '', deadline_days: '' });
+    setSections(updatedSections);
   };
 
-  const handleQuizChange = (e, sectionIndex, quizIndex) => {
-    const { name, value } = e.target;
-    const sections = [...formData.sections];
-    const quizzes = [...sections[sectionIndex].quizzes];
-    quizzes[quizIndex] = { ...quizzes[quizIndex], [name]: value };
-    sections[sectionIndex].quizzes = quizzes;
-    setFormData((prevData) => ({ ...prevData, sections }));
+  const handleRemoveAssignment = (sectionIndex, assignmentIndex) => {
+    const updatedSections = [...sections];
+    updatedSections[sectionIndex].assignments.splice(assignmentIndex, 1);
+    setSections(updatedSections);
   };
 
   const handleAddQuiz = (sectionIndex) => {
-    const sections = [...formData.sections];
-    sections[sectionIndex].quizzes.push({ title: '', instructions: '', start_time: '', end_time: '' });
-    setFormData((prevData) => ({ ...prevData, sections }));
+    const updatedSections = [...sections];
+    updatedSections[sectionIndex].quizzes.push({ title: '', instructions: '', start_time: '', end_time: '', deadline_days: '' });
+    setSections(updatedSections);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleRemoveQuiz = (sectionIndex, quizIndex) => {
+    const updatedSections = [...sections];
+    updatedSections[sectionIndex].quizzes.splice(quizIndex, 1);
+    setSections(updatedSections);
+  };
 
-    const formDataToSend = new FormData();
-    for (const key in formData) {
-      if (key === 'sections') {
-        formData[key].forEach((section, index) => {
-          for (const sectionKey in section) {
-            if (sectionKey === 'videos' || sectionKey === 'assignments' || sectionKey === 'quizzes') {
-              section[sectionKey].forEach((item, itemIndex) => {
-                for (const itemKey in item) {
-                  if (itemKey === 'file' || itemKey === 'video') {
-                    formDataToSend.append(`${key}[${index}][${sectionKey}][${itemIndex}][${itemKey}]`, item[itemKey]);
-                  } else {
-                    formDataToSend.append(`${key}[${index}][${sectionKey}][${itemIndex}][${itemKey}]`, item[itemKey]);
-                  }
-                }
-              });
-            } else {
-              formDataToSend.append(`${key}[${index}][${sectionKey}]`, section[sectionKey]);
-            }
-          }
-        });
-      } else {
-        formDataToSend.append(key, formData[key]);
-      }
-    }
-
-    try {
-      await axios.post('http://localhost:8000/course/courses/', formDataToSend, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
-      // Course created successfully, perform any desired actions
-    } catch (error) {
-      // Handle error
-    }
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    // Your form submission logic here
   };
 
   return (
-    <div className="create-course-form">
-      <h2>Create Course</h2>
+    <div className="create-course-form-container">
+      <h2>Create Course Form</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="title">Title</label>
-          <input
-            type="text"
-            id="title"
-            name="title"
-            value={formData.title}
-            onChange={handleChange}
-            required
-          />
+          <label htmlFor="title">Course Title:</label>
+          <input type="text" id="title" name="title" onChange={handleInputChange} required />
         </div>
-        {/* Add other form fields here */}
+
         <div className="form-group">
-          <label htmlFor="courseImage">Course Image</label>
-          <input
-            type="file"
-            id="courseImage"
-            name="courseImage"
-            accept="image/*"
-            onChange={handleImageChange}
-            required
-          />
+          <label htmlFor="duration">Course Duration:</label>
+          <input type="number" id="duration" name="duration" onChange={handleInputChange} required />
         </div>
+
         <div className="form-group">
-          <label>Sections</label>
-          {formData.sections.map((section, sectionIndex) => (
-            <div key={`section-${sectionIndex}`}>
-              <div className="form-group">
-                <label htmlFor={`section-${sectionIndex}`}>Section {sectionIndex + 1}</label>
-                <input
-                  type="text"
-                  id={`section-${sectionIndex}`}
-                  name={`sections[${sectionIndex}][section]`}
-                  value={section.section}
-                  onChange={(e) => handleSectionChange(e, sectionIndex)}
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label>Videos</label>
-                {section.videos.map((video, videoIndex) => (
-                  <div key={`video-${sectionIndex}-${videoIndex}`}>
-                    <input
-                      type="text"
-                      name={`sections[${sectionIndex}][videos][${videoIndex}][title]`}
-                      placeholder="Title"
-                      value={video.title}
-                      onChange={(e) => handleVideoChange(e, sectionIndex, videoIndex)}
-                      required
-                    />
-                    <input
-                      type="file"
-                      name={`sections[${sectionIndex}][videos][${videoIndex}][video]`}
-                      accept="video/*"
-                      onChange={(e) => handleVideoChange(e, sectionIndex, videoIndex)}
-                      required
-                    />
-                  </div>
-                ))}
-                <button type="button" onClick={() => handleAddVideo(sectionIndex)}>Add Video</button>
-              </div>
-              <div className="form-group">
-                <label>Assignments</label>
-                {section.assignments.map((assignment, assignmentIndex) => (
-                  <div key={`assignment-${sectionIndex}-${assignmentIndex}`}>
-                    <input
-                      type="text"
-                      name={`sections[${sectionIndex}][assignments][${assignmentIndex}][title]`}
-                      placeholder="Title"
-                      value={assignment.title}
-                      onChange={(e) => handleAssignmentChange(e, sectionIndex, assignmentIndex)}
-                      required
-                    />
-                    <textarea
-                      name={`sections[${sectionIndex}][assignments][${assignmentIndex}][instructions]`}
-                      placeholder="Instructions"
-                      value={assignment.instructions}
-                      onChange={(e) => handleAssignmentChange(e, sectionIndex, assignmentIndex)}
-                      required
-                    />
-                    <input
-                      type="file"
-                      name={`sections[${sectionIndex}][assignments][${assignmentIndex}][file]`}
-                      accept="application/pdf"
-                      onChange={(e) => handleAssignmentChange(e, sectionIndex, assignmentIndex)}
-                      required
-                    />
-                  </div>
-                ))}
-                <button type="button" onClick={() => handleAddAssignment(sectionIndex)}>Add Assignment</button>
-              </div>
-              <div className="form-group">
-                <label>Quizzes</label>
-                {section.quizzes.map((quiz, quizIndex) => (
-                  <div key={`quiz-${sectionIndex}-${quizIndex}`}>
-                    <input
-                      type="text"
-                      name={`sections[${sectionIndex}][quizzes][${quizIndex}][title]`}
-                      placeholder="Title"
-                      value={quiz.title}
-                      onChange={(e) => handleQuizChange(e, sectionIndex, quizIndex)}
-                      required
-                    />
-                    <textarea
-                      name={`sections[${sectionIndex}][quizzes][${quizIndex}][instructions]`}
-                      placeholder="Instructions"
-                      value={quiz.instructions}
-                      onChange={(e) => handleQuizChange(e, sectionIndex, quizIndex)}
-                      required
-                    />
-                    <input
-                      type="text"
-                      name={`sections[${sectionIndex}][quizzes][${quizIndex}][start_time]`}
-                      placeholder="Start Time"
-                      value={quiz.start_time}
-                      onChange={(e) => handleQuizChange(e, sectionIndex, quizIndex)}
-                      required
-                    />
-                    <input
-                      type="text"
-                      name={`sections[${sectionIndex}][quizzes][${quizIndex}][end_time]`}
-                      placeholder="End Time"
-                      value={quiz.end_time}
-                      onChange={(e) => handleQuizChange(e, sectionIndex, quizIndex)}
-                      required
-                    />
-                  </div>
-                ))}
-                <button type="button" onClick={() => handleAddQuiz(sectionIndex)}>Add Quiz</button>
-              </div>
+          <label htmlFor="price">Course Price:</label>
+          <input type="number" id="price" name="price" onChange={handleInputChange} required />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="category">Course Category:</label>
+          <input type="text" id="category" name="category" onChange={handleInputChange} required />
+        </div>
+
+        {sections.map((section, index) => (
+          <div className="section-fields" key={index}>
+            <h3>Section {index + 1}</h3>
+            <div className="form-group">
+              <label htmlFor={`section-${index}`}>Section Title:</label>
+              <input
+                type="text"
+                id={`section-${index}`}
+                name="section"
+                value={section.section}
+                onChange={(event) => handleInputChange(index, event)}
+                required
+              />
             </div>
-          ))}
-          <button type="button" onClick={handleAddSection}>Add Section</button>
-        </div>
-        <button type="submit">Create Course</button>
+
+            {/* Videos */}
+            {section.videos.map((video, videoIndex) => (
+              <div className="video-fields" key={videoIndex}>
+                <h4>Video {videoIndex + 1}</h4>
+                <div className="form-group">
+                  <label htmlFor={`video-title-${index}-${videoIndex}`}>Video Title:</label>
+                  <input
+                    type="text"
+                    id={`video-title-${index}-${videoIndex}`}
+                    name="title"
+                    value={video.title}
+                    onChange={(event) => handleVideoChange(index, videoIndex, event)}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor={`video-file-${index}-${videoIndex}`}>Video File:</label>
+                  <input
+                    type="file"
+                    id={`video-file-${index}-${videoIndex}`}
+                    name="videoFile"
+                    onChange={(event) => handleVideoFileChange(index, videoIndex, event)}
+                    required
+                  />
+                </div>
+                <button type="button" onClick={() => handleRemoveVideo(index, videoIndex)}>
+                  Remove Video
+                </button>
+              </div>
+            ))}
+
+            {/* Add video button */}
+            <button type="button" onClick={() => handleAddVideo(index)}>
+              Add Video
+            </button>
+
+            {/* ... */}
+
+            {/* Remove section button */}
+            <button type="button" onClick={() => handleRemoveSection(index)}>
+              Remove Section
+            </button>
+          </div>
+        ))}
+
+        {/* Add section button */}
+        <button type="button" onClick={handleAddSection}>
+          Add Section
+        </button>
+
+        {/* Submit button */}
+        <button type="submit">Submit</button>
       </form>
     </div>
   );
