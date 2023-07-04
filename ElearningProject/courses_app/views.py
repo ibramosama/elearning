@@ -12,7 +12,7 @@ from .permissions import (
     IsAdminOrInstructor,
     IsAdminOrInstructorOrEnrolledStudent,
     IsCourseInstructorOrAdmin,
-    IsCourseApproved, IsReviewOwnerOrReadOnly, IsStudent,
+    IsCourseApproved, IsReviewOwnerOrReadOnly, IsStudent, IsCourseApprovedOrReadOnly, IsInstructorOrReadOnly,
 )
 
 User = get_user_model()
@@ -107,12 +107,19 @@ class ReviewListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = ReviewSerializer
     permission_classes = [IsReviewOwnerOrReadOnly]
 
-class CourseListView(generics.ListAPIView):
+class CourseListView(generics.ListAPIView,generics.RetrieveAPIView):
     queryset = Course.objects.filter(is_approved=True)
     serializer_class = CourseListSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
     filter_backends = [filters.SearchFilter]
     search_fields = ['title']
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        course_id = self.kwargs.get('pk')
+        if course_id is not None:
+            queryset = queryset.filter(id=course_id)
+        return queryset
 
 class AddToCartView(generics.CreateAPIView):
     serializer_class = CartSerializer
@@ -149,7 +156,8 @@ class VideoList(generics.ListCreateAPIView):
 class VideoDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Video.objects.all()
     serializer_class = VideoSerializer
-    permission_classes = [IsCourseApproved]
+    permission_classes = [IsInstructorOrReadOnly]
+
 
 class EnrollView(generics.CreateAPIView):
     serializer_class = EnrollmentSerializer

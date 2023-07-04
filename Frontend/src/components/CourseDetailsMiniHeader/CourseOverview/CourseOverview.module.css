@@ -1,0 +1,11 @@
+.learning_obj{
+    border: 1px solid rgb(205, 203, 203);
+    padding: 1em;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+.lerning_obj_icon{
+    font-size: 1em;
+    color:rgb(124, 192, 22);
+    -webkit-text-stroke: 1px;
+}

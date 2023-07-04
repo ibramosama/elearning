@@ -1,4 +1,8 @@
+from django.http import StreamingHttpResponse, Http404
+from wsgiref.util import FileWrapper
 from rest_framework import serializers
+
+from Assign_Quizzes.serializers import AssignmentSerializer, QuizSerializer
 from .models import Category, Course, Section, Video, Review, Cart, Enrollment, Assignment, Quiz
 
 
@@ -7,13 +11,34 @@ class VideoSerializer(serializers.ModelSerializer):
         model = Video
         fields = ('id', 'video', 'title')
 
+        def to_representation(self, instance):
+            request = self.context.get('request')
+            if request and hasattr(instance, 'video'):
+                video_path = instance.video.path
+
+                try:
+                    # Open the video file using FileWrapper and stream it
+                    video_file = open(video_path, 'rb')
+                    file_wrapper = FileWrapper(video_file)
+
+                    response = StreamingHttpResponse(file_wrapper, content_type='video/mp4')
+                    response['Content-Length'] = video_file.size
+                    response['Content-Disposition'] = f'inline; filename="{instance.title}.mp4"'
+                    return response
+                except FileNotFoundError:
+                    # Video file not found
+                    raise Http404('Video not found.')
+
+            return super().to_representation(instance)
 
 class SectionSerializer(serializers.ModelSerializer):
     videos = VideoSerializer(many=True)
+    assignments = AssignmentSerializer(many=True, required=False)
+    quizzes = QuizSerializer(many=True, required=False)
 
     class Meta:
         model = Section
-        fields = ('id', 'section', 'videos')
+        fields = ('id', 'section', 'videos', 'assignments', 'quizzes')
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -64,12 +89,20 @@ class CourseSerializer(serializers.ModelSerializer):
 
         for section_data in sections_data:
             videos = section_data.pop('videos', [])
+            assignments= section_data.pop('assignments', [])
+            quizzes= section_data.pop('quizzes', [])
             section = Section.objects.create(course=course, **section_data)
 
             for video_data in videos:
                 video_data['section'] = section  # Set the section for each video
                 video_data['course_id'] = course.id  # Set the course ID for each video
                 video = Video.objects.create(**video_data)
+            for assignments_data in assignments:
+                assignments_data['course_id'] = course.id  # Set the course ID for each video
+                assignment = Assignment.objects.create(**assignments_data)
+            for Quiz_data in quizzes:
+                Quiz_data['course_id'] = course.id  # Set the course ID for each video
+                quiz = Quiz.objects.create(**Quiz_data)
 
         return course
 
@@ -139,22 +172,44 @@ class ReviewSerializer(serializers.ModelSerializer):
 class CourseListSerializer(serializers.ModelSerializer):
     demo = serializers.SerializerMethodField()
     description = serializers.SerializerMethodField()
+    sections = serializers.SerializerMethodField()
+    category =serializers.ReadOnlyField(source='category.name')
+
 
     class Meta:
         model = Course
-        fields = ('id', 'title', 'duration', 'price', 'category', 'course_image', 'description', 'demo')
+        fields = ('id', 'title', 'duration', 'price', 'category', 'course_image', 'description', 'demo', 'sections', 'level')
+
+    def get_sections(self, obj):
+        sections = Section.objects.filter(course=obj.id).all()
+        section_data = []
+        for section in sections:
+            videos = section.videos.all()
+            video_titles = [video.title for video in videos]
+            section_data.append({
+                'section': section.section,
+                'videos': video_titles
+            })
+        return section_data
 
     def get_demo(self, obj):
         # Retrieve the first video of the course
+
         first_video = Video.objects.filter(course=obj.id).first()
         if first_video:
-            return VideoSerializer(first_video).data
+            request = self.context.get('request')
+            video_url = first_video.video.url
+            if request is not None:
+                return request.build_absolute_uri(video_url)
+            return video_url
 
         return None
 
     def get_description(self, obj):
         # Return the description of the course
         return obj.description
+
+
 
 
 class CartSerializer(serializers.ModelSerializer):
@@ -169,17 +224,5 @@ class EnrollmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Enrollment
         fields = ('user', 'course', 'date_enrolled')
-
-
-class AssignmentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Assignment
-        fields = ('id', 'course', 'title', 'description', 'deadline', 'max_marks')
-
-
-class QuizSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Quiz
-        fields = ('id', 'course', 'title', 'description', 'time_limit')
 
 

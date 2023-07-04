@@ -41,13 +41,11 @@ class AssignmentSubmission(models.Model):
 
 
 class QuizQuestion(models.Model):
-    question_id = models.AutoField(primary_key=True)
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     question_text = models.TextField()
 
 
 class QuizOption(models.Model):
-    option_id = models.AutoField(primary_key=True)
     question = models.ForeignKey(QuizQuestion, on_delete=models.CASCADE)
     option_text = models.CharField(max_length=255)
     is_correct = models.BooleanField()
