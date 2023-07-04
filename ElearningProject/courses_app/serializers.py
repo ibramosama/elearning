@@ -209,18 +209,18 @@ class ReviewSerializer(serializers.ModelSerializer):
         model = Review
         fields = ('id', 'course', 'user', 'rating', 'comment')
 
-
 class CourseListSerializer(serializers.ModelSerializer):
     demo = serializers.SerializerMethodField()
     description = serializers.SerializerMethodField()
-    sections = serializers.SerializerMethodField()
+    sections=serializers.SerializerMethodField()
     category =serializers.ReadOnlyField(source='category.name')
-
-
     class Meta:
         model = Course
-        fields = ('id', 'title', 'duration', 'price', 'category', 'course_image', 'description', 'demo', 'sections', 'level')
-
+        fields = ('id', 'title', 'duration', 'price', 'category', 'course_image', 'description', 'demo','sections','level')
+    
+    # def get_category(self,obj):
+    #     category = Category.objects.get(pk=obj.)
+    #     return category
     def get_sections(self, obj):
         sections = Section.objects.filter(course=obj.id).all()
         section_data = []
@@ -232,10 +232,9 @@ class CourseListSerializer(serializers.ModelSerializer):
                 'videos': video_titles
             })
         return section_data
-
     def get_demo(self, obj):
         # Retrieve the first video of the course
-
+        
         first_video = Video.objects.filter(course=obj.id).first()
         if first_video:
             request = self.context.get('request')

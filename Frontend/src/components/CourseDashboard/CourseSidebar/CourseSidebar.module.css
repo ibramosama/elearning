@@ -1,0 +1,113 @@
+
+.sidebar {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+    overflow-y: scroll;
+}
+  
+.sidebar a {
+    padding: 8px 8px 8px 4px;
+    text-decoration: none;
+    font-size: 1.2em;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+}
+.sidebar li {
+    padding: 8px 8px 8px 4px;
+    text-decoration: none;
+    font-size: 1.2em;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+    cursor: pointer;
+}
+.sidebar li:hover{
+    color: #f1f1f1;
+}
+.sidebar a:hover {
+    color: #ffffff;
+}
+  
+.sidebar .closebtn {
+    position: absolute;
+    top: 0;
+    right: 18px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+.sidebar .title{
+    position: absolute;
+    top: 0;
+    left: 0;
+    /* right: 18px; */
+    font-size: 36px;
+    margin-left: 20px;
+    color:aliceblue;
+    font-weight: 600;
+    margin-top:.25em;
+}
+  
+.openbtn {
+    font-size: 20px;
+    cursor: pointer;
+    background-color: #111;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+}
+  
+.openbtn:hover {
+    background-color: #444;
+}
+  
+#main {
+    transition: margin-left .5s;
+    padding: 16px;
+}
+.btn_section{
+    background-color:#444;
+    border: none;
+    padding:.4em;
+    text-align: center;
+    width: 100%;
+    font-size: 1.3em;
+    border-radius: 4px;
+}
+.btn_section:hover{
+    background-color: #f1f1f1;
+}
+.line_section{
+    color: #f1f1f1;
+}
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888; 
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }
+  /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+    .sidebar {padding-top: 15px;}
+    .sidebar a {font-size: 18px;}
+}
