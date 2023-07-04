@@ -1,0 +1,256 @@
+.navBar {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.navList {
+  display: flex;
+  list-style: none;
+  padding: 0;
+}
+
+.navItem {
+  padding: 10px 20px;
+  margin: 0 10px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.active {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.content {
+  width: 70%;
+  margin-top: 30px;
+}
+
+h3 {
+  font-size: 24px;
+  color: #333;
+}
+
+.instructorInfo {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.instructorPhoto {
+  width: 250px;
+  height: 300px;
+  background-color: #f9f9f9;
+}
+
+.instructorPhoto img {
+  width: 250px;
+  height: 300px;
+}
+
+.instructorDetails {
+  margin-left: 20px;
+}
+
+.instructorName {
+  font-size: 30px;
+  color: black;
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+}
+
+.starIcon {
+  color: gold;
+  font-size: 30px;
+}
+
+.ratingText {
+  margin-left: 10px;
+}
+
+.courseStats {
+  display: flex;
+  margin-top: 20px;
+  margin-left: 320px;
+  margin-top: -80px;
+}
+
+.stat {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+}
+
+.statIcon {
+  color: #007bff;
+  font-size: 20px;
+  margin-right: 10px;
+}
+
+.studentFeedback {
+  margin-top: 100px;
+}
+
+.ratingBar::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -10px;
+  height: 100%;
+  width: 2px;
+  background-color: blue;
+}
+
+.ratingContainer {
+  display: flex;
+  align-items: flex-start;
+}
+
+.rectangle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 400px;
+  height: 200px;
+  margin-right: 500px;
+  margin-left: 100px;
+  margin-bottom: 100px;
+}
+
+.blueFont {
+  font-size: 44px;
+  font-weight: bold;
+  color: blue;
+}
+
+.grayFont {
+  font-size: 20px;
+  color: gray;
+}
+
+.ratingDistribution {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.ratingBar {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.ratingLabel {
+  margin-right: 10px;
+}
+
+.progressBar {
+  width: 200px;
+  height: 15px;
+  background-color: #ddd;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.progress {
+  height: 100%;
+  background-color: blue;
+  border-radius: 5px;
+}
+
+.percentage {
+  margin-left: 5px;
+}
+
+/* Responsive styles for small screens */
+
+@media screen and (max-width: 576px) {
+  .content {
+    width: 90%;
+  }
+  
+  .instructorInfo {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .instructorPhoto {
+    width: 200px;
+    height: 200px;
+  }
+  
+  .instructorPhoto img {
+    width: 200px;
+    height: 200px;
+  }
+  
+  .instructorDetails {
+    margin-left: 0;
+    margin-top: 10px;
+  }
+  
+  .courseStats {
+    margin-left: 0;
+    margin-top: 20px;
+  }
+  
+  .rectangle {
+    width: 100%;
+    height: 150px;
+    margin-right: 0;
+    margin-left: 0;
+    margin-bottom: 20px;
+  }
+  
+  .ratingDistribution {
+    align-items: center;
+  }
+}
+
+/* Responsive styles for medium screens */
+
+@media screen and (min-width: 577px) and (max-width: 991px) {
+  .content {
+    width: 80%;
+  }
+  
+  .instructorPhoto {
+    width: 250px;
+    height: 250px;
+  }
+  
+  .instructorPhoto img {
+    width: 250px;
+    height: 250px;
+  }
+}
+
+/* Responsive styles for large screens */
+
+@media screen and (min-width: 992px) {
+  .content {
+    width: 70%;
+  }
+  
+  .instructorPhoto {
+    width: 300px;
+    height: 300px;
+  }
+  
+  .instructorPhoto img {
+    width: 300px;
+    height: 300px;
+    margin-left: 10px;
+  }
+  
+
+  .courseStats {
+    margin-left: 320px;
+    margin-top: -80px;
+  }
+}

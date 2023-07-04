@@ -6,19 +6,14 @@ from rest_framework.permissions import BasePermission
 from courses_app.models import Course
 
 
-class IsInstructor(permissions.BasePermission):
-    """
-    Custom permission to allow only instructors of a course to create quizzes and assignments.
-    """
-
+class IsCourseInstructor(BasePermission):
     def has_permission(self, request, view):
-        # Check if the user is an instructor of the course
-        if request.user.is_authenticated and request.user.role == "instructor":
-            course_id = view.kwargs.get("course_id")  # Adjust this based on your view's URL configuration
-            if course_id:
-                course = get_object_or_404(Course, id=course_id)
-                return course.instructor == request.user
-        return False
+        # Allow any authenticated user to access the view.
+        return request.user.is_authenticated
+
+    def has_object_permission(self, request, view, obj):
+        # Check if the user is the instructor of the course associated with the assignment.
+        return obj.course.instructor == request.user
 
 
 

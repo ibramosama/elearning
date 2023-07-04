@@ -25,15 +25,15 @@ from .serializers import (
 
 from courses_app.models import Quiz, Assignment
 from .permission import (
-    IsInstructor,
     IsEnrolledStudent,
-    CanAddAssignmentGrade,
+    CanAddAssignmentGrade, IsCourseInstructor,
 )
 
 # Assignment views
 
 class AssignmentList(APIView):
-    permission_classes = [IsAuthenticated, IsInstructor]
+    permission_classes = [IsAuthenticated, IsCourseInstructor]
+    model =Assignment
 
     def get(self, request):
         assignments = Assignment.objects.filter(course__instructor=request.user)
@@ -85,7 +85,7 @@ class AssignmentDetail(APIView):
 # Quiz views
 
 class QuizList(APIView):
-    permission_classes = [IsAuthenticated, IsInstructor]
+    permission_classes = [IsAuthenticated, IsCourseInstructor]
 
     def get(self, request):
         quizzes = Quiz.objects.filter(course__instructor=request.user)

@@ -2,6 +2,7 @@ from datetime import timedelta, datetime
 
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.http import FileResponse
 from rest_framework.exceptions import PermissionDenied
 
 User = get_user_model()
@@ -37,7 +38,6 @@ class Course(models.Model):
 
 
 class Assignment(models.Model):
-    assignment_id = models.AutoField(primary_key=True)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     instructions = models.TextField()
@@ -57,7 +57,8 @@ class Assignment(models.Model):
         return self.title
 
     def save(self, *args, **kwargs):
-        if self.user.is_authenticated and self.user.role == "student":
+        request = kwargs.pop('request', None)  # Get the request object if passed
+        if request and request.user.is_authenticated and request.user.role == "student":
             enrollment = Enrollment.objects.filter(user=self.user, course=self.assignment.course).first()
             if enrollment:
                 if not self.is_completed and datetime.now() <= self.assignment.deadline:
@@ -65,17 +66,11 @@ class Assignment(models.Model):
                         self.is_completed = True
                         super().save(*args, **kwargs)
                     else:
-                        raise PermissionDenied("Assignment grade should be at least 70% to mark as completed.")
-                else:
-                    raise PermissionDenied("Assignment submission deadline has passed.")
-            else:
-                raise PermissionDenied("User is not enrolled in the course.")
-        else:
-            raise PermissionDenied("User does not have the role of 'student'.")
+                        self.is_completed = False
+
 
 
 class Quiz(models.Model):
-    quiz_id = models.AutoField(primary_key=True)
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='course_quizzes')
     title = models.CharField(max_length=255)
     instructions = models.TextField()
@@ -93,14 +88,13 @@ class Quiz(models.Model):
         return None
 
     def save(self, *args, **kwargs):
+
         if not self.is_completed and datetime.now() <= self.quiz.deadline:
             if self.score is not None and self.score >= 70:
                 self.is_completed = True
                 super().save(*args, **kwargs)
             else:
-                raise PermissionDenied("Quiz score should be at least 70% to mark as completed.")
-        else:
-            raise PermissionDenied("Quiz submission deadline has passed.")
+                self.is_completed = False
 
 
 class Enrollment(models.Model):
@@ -127,8 +121,6 @@ class Cart(models.Model):
 class Section(models.Model):
     section = models.CharField(max_length=100)
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='sections')
-    assignments = models.ManyToManyField(Assignment, related_name='sections', blank=True)
-    quizzes = models.ManyToManyField(Quiz, related_name='sections', blank=True)
 
     def __str__(self):
         return self.section
@@ -142,6 +134,12 @@ class Video(models.Model):
 
     def __str__(self):
         return self.title
+
+    def stream_video(self, request):
+        video_path = self.video.path
+        video_file = open(video_path, 'rb')
+        response = FileResponse(video_file)
+        return response
 
 
 class Review(models.Model):

@@ -1,4 +1,8 @@
+from django.http import StreamingHttpResponse, Http404
+from wsgiref.util import FileWrapper
 from rest_framework import serializers
+
+from Assign_Quizzes.serializers import AssignmentSerializer, QuizSerializer
 from .models import Category, Course, Section, Video, Review, Cart, Enrollment, Assignment, Quiz
 
 
@@ -7,13 +11,34 @@ class VideoSerializer(serializers.ModelSerializer):
         model = Video
         fields = ('id', 'video', 'title')
 
+        def to_representation(self, instance):
+            request = self.context.get('request')
+            if request and hasattr(instance, 'video'):
+                video_path = instance.video.path
+
+                try:
+                    # Open the video file using FileWrapper and stream it
+                    video_file = open(video_path, 'rb')
+                    file_wrapper = FileWrapper(video_file)
+
+                    response = StreamingHttpResponse(file_wrapper, content_type='video/mp4')
+                    response['Content-Length'] = video_file.size
+                    response['Content-Disposition'] = f'inline; filename="{instance.title}.mp4"'
+                    return response
+                except FileNotFoundError:
+                    # Video file not found
+                    raise Http404('Video not found.')
+
+            return super().to_representation(instance)
 
 class SectionSerializer(serializers.ModelSerializer):
     videos = VideoSerializer(many=True)
+    assignments = AssignmentSerializer(many=True, required=False)
+    quizzes = QuizSerializer(many=True, required=False)
 
     class Meta:
         model = Section
-        fields = ('id', 'section', 'videos')
+        fields = ('id', 'section', 'videos', 'assignments', 'quizzes')
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -64,12 +89,20 @@ class CourseSerializer(serializers.ModelSerializer):
 
         for section_data in sections_data:
             videos = section_data.pop('videos', [])
+            assignments= section_data.pop('assignments', [])
+            quizzes= section_data.pop('quizzes', [])
             section = Section.objects.create(course=course, **section_data)
 
             for video_data in videos:
                 video_data['section'] = section  # Set the section for each video
                 video_data['course_id'] = course.id  # Set the course ID for each video
                 video = Video.objects.create(**video_data)
+            for assignments_data in assignments:
+                assignments_data['course_id'] = course.id  # Set the course ID for each video
+                assignment = Assignment.objects.create(**assignments_data)
+            for Quiz_data in quizzes:
+                Quiz_data['course_id'] = course.id  # Set the course ID for each video
+                quiz = Quiz.objects.create(**Quiz_data)
 
         return course
 
@@ -176,6 +209,8 @@ class CourseListSerializer(serializers.ModelSerializer):
         return obj.description
 
 
+
+
 class CartSerializer(serializers.ModelSerializer):
     total_price = serializers.ReadOnlyField()
 
@@ -188,17 +223,5 @@ class EnrollmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Enrollment
         fields = ('user', 'course', 'date_enrolled')
-
-
-class AssignmentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Assignment
-        fields = ('id', 'course', 'title', 'description', 'deadline', 'max_marks')
-
-
-class QuizSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Quiz
-        fields = ('id', 'course', 'title', 'description', 'time_limit')
 
 

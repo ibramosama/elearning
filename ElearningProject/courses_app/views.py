@@ -12,7 +12,7 @@ from .permissions import (
     IsAdminOrInstructor,
     IsAdminOrInstructorOrEnrolledStudent,
     IsCourseInstructorOrAdmin,
-    IsCourseApproved, IsReviewOwnerOrReadOnly, IsStudent,
+    IsCourseApproved, IsReviewOwnerOrReadOnly, IsStudent, IsCourseApprovedOrReadOnly, IsInstructorOrReadOnly,
 )
 
 User = get_user_model()
@@ -124,6 +124,7 @@ class CourseListView(generics.ListAPIView,generics.RetrieveAPIView):
         return queryset
     
 
+
 class AddToCartView(generics.CreateAPIView):
     serializer_class = CartSerializer
     permission_classes = [IsStudent]
@@ -159,7 +160,8 @@ class VideoList(generics.ListCreateAPIView):
 class VideoDetail(generics.ListAPIView,generics.RetrieveUpdateDestroyAPIView):
     queryset = Video.objects.all()
     serializer_class = VideoSerializer
-    permission_classes = [IsCourseApproved]
+    permission_classes = [IsInstructorOrReadOnly]
+
 
 class EnrollView(generics.CreateAPIView):
     serializer_class = EnrollmentSerializer

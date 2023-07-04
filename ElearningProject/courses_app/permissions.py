@@ -65,6 +65,28 @@ class IsCourseApproved(permissions.BasePermission):
             return course.is_approved or (request.user.role == 'student' and request.user in course.students.all())
         return False
 
+
+class IsCourseApprovedOrReadOnly(permissions.BasePermission):
+    def has_permission(self, request, view):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+
+        video = view.get_object()
+        course = video.course
+
+        return course.is_approved
+
+class IsInstructorOrReadOnly(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+
+        video = obj
+        course = video.course
+        user = request.user
+
+        return course.instructor == user and course.is_approved
+
 class CanUpdateCourse(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         if request.method in permissions.SAFE_METHODS:
