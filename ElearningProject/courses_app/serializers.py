@@ -47,11 +47,18 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = ('name',)
 
+class InstructorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('username',)  # Add any other fields you want to include
 
 class CourseFieldsSerializer(serializers.ModelSerializer):
+    instructor = InstructorSerializer()
+    category =serializers.ReadOnlyField(source='category.name')
     class Meta:
         model = Course
-        fields = ('id', 'title', 'duration', 'price', 'course_image')
+        fields = ('id', 'title', 'duration', 'price', 'course_image','instructor','level','category')
+    
 
 
 class CourseSerializer(serializers.ModelSerializer):

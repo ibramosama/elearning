@@ -15,6 +15,7 @@ import CourseDetails from './components/CourseDetails/CourseDetails';
 import CourseDashboard from './components/CourseDashboard/CourseDashboard';
 import NewCourse from './components/InstructorProfile/NewCourse'
 import CourseByCategory from './components/Home/CourseByCategory/CourseByCategory';
+import MainNavigation from './components/Home/MainNavigation/MainNavigation';
 function App() {
   const Role = {
     ADMIN:"admin",
@@ -23,15 +24,22 @@ function App() {
   }
   return (
     <AuthProvider>
+      
       <Routes>
         {/* public Routes */}
-        <Route path='/category/:id' element={<CourseByCategory/>}></Route>
+        
+        
         <Route path='/course_display' element={<CourseDashboard/>}></Route>
-        <Route path='/course_details/:id' element={<CourseDetails/>}></Route>
-        <Route path ='/login' element ={<Login/>}/>
-        <Route path ='/register' element = {<Register/>}/>
-        <Route path='profile' element={<InstructorProfile></InstructorProfile>}></Route>
-        <Route path ='/home' element = {<Home/>}/>
+        
+        <Route element={<MainNavigation></MainNavigation>}>
+          <Route path='profile' element={<InstructorProfile></InstructorProfile>}></Route>
+          <Route path ='/home' element = {<Home/>}/>
+          <Route path='/course_details/:id' element={<CourseDetails/>}></Route>
+          <Route path ='/login' element ={<Login/>}/>
+          <Route path ='/register' element = {<Register/>}/>
+          <Route path='/category/:id' element={<CourseByCategory/>}></Route>
+        </Route>
+        
         {/* admin Routes */}
         <Route element={<Auth allowedRoles={[Role.ADMIN]}/>}>
             <Route path ='/home' element = {<Home/>}/>

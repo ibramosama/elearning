@@ -1,7 +1,7 @@
 import axios from "axios"
 
 
-var URL = "http://127.0.0.1:8000/api/"
+var URL = "http://127.0.0.1:8000/"
 
 
 const login = async (loginData)=>{
@@ -26,7 +26,6 @@ const login = async (loginData)=>{
     )
 }
 const register = async(registerData)=>{
-    console.log(registerData)
     return await axios.post(URL+'register/', registerData,{
         headers: {
             "Content-Type": "multipart/form-data",

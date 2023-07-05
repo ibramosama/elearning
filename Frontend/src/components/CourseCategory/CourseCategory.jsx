@@ -16,7 +16,8 @@ function CourseCategory() {
     },[])
 
     const courseRelatedCategories=(id)=>{
-        navigate('/home')
+        var course_id = parseInt(id)+1
+        navigate(`/category/${course_id}`)
     }
     return ( 
         <div className={`${categoryStyle.course_category} mt-4 mb-4`}>

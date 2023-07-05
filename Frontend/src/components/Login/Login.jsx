@@ -6,15 +6,15 @@ import styleLogin from './Login.module.css';
 function Login() {
     const navigate = useNavigate();
     let [FormsValues ,setFormsValues] = useState({
-        email:'',
+        username:'',
         password:''
     });
     let [LoginError,setLoginError] =useState(false) 
     const [disabled,setDisabled] = useState(true);
-    let Inputemail =useRef(null)
+    let Inputusername =useRef(null)
     let Inputpassword =useRef(null)
     let [errors ,setErrors] = useState({
-        email:null,
+        username:null,
         password:null
     })
     let [errorRun,setErrorsRun]=useState(false)
@@ -25,7 +25,7 @@ function Login() {
         SettoastfailureMsq(false)
         setLoginError(false);
         event.preventDefault();
-        if(errors.email || errors.password){
+        if(errors.username || errors.password){
             setErrorsRun(true);
         }else{
             if(FormsValues){
@@ -52,13 +52,13 @@ function Login() {
     const operationHandeler = (e) =>{
         // eslint-disable-next-line
         setErrorsRun(false)
-        if(e.target.name == "email"){
-            let regex = new RegExp(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/);
-            if( regex.test(e.target.value)){
-                setErrors({...errors,email:null})
+        if(e.target.name == "username"){
+            
+            if(e.target.value){
+                setErrors({...errors,username:null})
                 setFormsValues({...FormsValues, [e.target.name]:e.target.value})
             }else{
-                setErrors({...errors,email:'invalid email , email should as mahmoud@email.com '});
+                setErrors({...errors,username:'invalid username '});
             }
             console.log(errors)
             
@@ -76,7 +76,7 @@ function Login() {
 
         // check disabled submit btn based on data
         console.log(Inputpassword.current.value.length)
-        if(!Inputpassword.current.value.length || !Inputemail.current.value.length){
+        if(!Inputpassword.current.value.length || !Inputusername.current.value.length){
             setDisabled(true);
         }
         else{
@@ -148,14 +148,14 @@ function Login() {
 
 
                                 <div className="mb-2">
-                                    <label htmlFor="InputEmail1" className={`${styleLogin.form_label}`}>Your email </label>
-                                    <input name="email" ref={Inputemail} onChange={operationHandeler} 
+                                    <label htmlFor="InputEmail1" className={`${styleLogin.form_label}`}>Your Username </label>
+                                    <input name="username" ref={Inputusername} onChange={operationHandeler} 
                                     className={`${(errors.username && errorRun) ? styleLogin.error_input:styleLogin.form_input}`} 
                                      id="InputEmail1" placeholder=' shopfy@mail.com ' aria-describedby="emailHelp"/>
 
                                     {/* validation error msg  */}
                                     <div className={`${styleLogin.errorMsg}`}>
-                                    {(errors.username && errorRun) ? errors.email : null}
+                                    {(errors.username && errorRun) ? errors.username : null}
                                     </div>
                                 </div>
                                 <div className="mb-2">

@@ -16,21 +16,22 @@ function TopCategory() {
     },[])
 
     const courseRelatedCategories=(id)=>{
-        navigate('/category/'+id)
+        var cat_id = parseInt(id)+1
+        navigate('/category/'+cat_id)
     }
     return ( 
         <div className="container-lg container-sm-fluid">
-            <div className={`fs-3 ms-lg-5 ${catStyle.title}`}>
+            <div className={`fs-3 ms-lg-4 ${catStyle.title}`}>
                 Top Categoryies
             </div>
-            <div className='d-flex flex-wrap ms-lg-5 mt-3 flex-grow justif-content-center'>
+            <div className='d-flex flex-wrap ms-lg-4 me-3 mt-3 flex-grow justif-content-center'>
                 {
                 Categories.map((category,key)=>(
                     <div 
                     onClick={()=>(courseRelatedCategories(key))}
                     key={key} 
                     className={`${catStyle.cat_item}  flex-fill flex-shrink-0`}>
-                        Personal Development
+                        {category.name}
                     </div>
                 ))}
                 

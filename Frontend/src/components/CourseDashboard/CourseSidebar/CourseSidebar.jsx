@@ -20,7 +20,7 @@ function CourseSidebar() {
         main.current.style.marginLeft = "0";
     };
     useEffect(()=>{
-        get_course_data(7).then((data)=>{
+        get_course_data(6).then((data)=>{
             Set_course_data(data)
             console.log(data)
         })

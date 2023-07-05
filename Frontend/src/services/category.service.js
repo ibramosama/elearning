@@ -19,6 +19,7 @@ const getAllCategories = async ()=>{
 const getCourseByCategory= async(id)=>{
     return await axios.get(URL+`course/category/${id}/courses/`)
     .then(res =>{
+        
         if(res.data.length != 0 ){
             console.log(res)
             return res.data
