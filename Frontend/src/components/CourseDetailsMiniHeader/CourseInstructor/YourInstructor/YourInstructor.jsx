@@ -1,10 +1,11 @@
 import React from 'react';
 import styles from './YourInstructor.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faVideo, faEnvelope, faUser, faPlus  } from '@fortawesome/free-solid-svg-icons';
+import { faVideo, faEnvelope, faUser  } from '@fortawesome/free-solid-svg-icons';
 const YourInstructor = () => {
   return (
     <div className={styles.page}>
+     
       <div className={styles.content}>
         <h3>Your Instructor</h3>
         <div className={styles.instructorInfo}>
@@ -34,10 +35,7 @@ const YourInstructor = () => {
             </div>
            
               </div>
-               {/* <div className={styles.SeeMore}>
-              <FontAwesomeIcon icon={faPlus} className={styles.statIcon} />
-              <p>See More</p>
-            </div> */}
+              
         <div className={styles.studentFeedback}>
           <h3>Student Feedback</h3>
           <div className={styles.ratingContainer}>
