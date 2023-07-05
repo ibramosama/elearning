@@ -3,7 +3,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './NewCourse.css';
 import { useEffect } from "react";
-
+import { useContext  } from 'react';
+import { AuthContext } from '../../../context/AuthContext';
 const CreateCourseForm = () => {
   const [title, setTitle] = useState('');
   const [duration, setDuration] = useState('');
@@ -15,7 +16,7 @@ const CreateCourseForm = () => {
   const [level, setLevel] = useState('');
   const [courseImage, setCourseImage] = useState(null);
   const [sections, setSections] = useState([{ section: '', videos: [], assignments: [], quizzes: [] }]);
-
+  
 
   useEffect(() => {
     fetch("http://127.0.0.1:8000/course/categories/")
@@ -174,13 +175,16 @@ const CreateCourseForm = () => {
       });
     });
     
+    var accessToken = localStorage.getItem("access");
+    console.log(accessToken)
+    let auth ={
+      headers:{
+        'Content-Type': 'multipart/form-data',
+        Authorization:`Bearer ${accessToken}`
+      }
+    }
     axios
-      .post('http://localhost:8000/course/courses/', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg4NTM2MjU5LCJpYXQiOjE2ODg1MTgyNTksImp0aSI6IjFkZDY3MzgwZmZlMTRkMTc4ZWRhYzA2NWIwYTg0N2ZlIiwidXNlcl9pZCI6MywiZW1haWwiOiJpYnJhbS5vc2FtYTE3QGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiJ9.pTcGX2mftSCJ3xLKTnrmph6Z-hFjVbZzQhb2rV_F4i4`,
-        },
-      })
+      .post('http://localhost:8000/course/courses/', formData,auth )
   
       .then((response) => {
         console.log(response.data);

@@ -7,9 +7,6 @@ function MainNavigation() {
     const {authUser}=useContext(AuthContext)
     const navigate = useNavigate()
     const handleNav =(link)=>{
-        console.log(authUser)
-
-        console.log(link)
         navigate(link)
     }
     const handel_logout =() =>{
@@ -37,7 +34,15 @@ function MainNavigation() {
                 
                     <div className='d-flex align-items-center me-lg-4'>
                         
-                        <div className={`${navStyle.user_name}`}>{authUser?.username}</div>
+                        <div 
+                        id="dropdownMenuButton"
+                        data-bs-toggle="dropdown" aria-expanded="false"
+                        className={`${navStyle.user_name} dropdown`}>{authUser?.username}</div>
+                        <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a className="dropdown-item" href="">Profile</a>
+                            <a className="dropdown-item" href="/cart">My Cart</a>
+                            <a className="dropdown-item" href="" onClick={handel_logout}> Log out </a>
+                        </div>
     
                         <img src={'http://127.0.0.1:8000'+authUser.image} className={`${navStyle.user_img} me-3`}></img>
                         <i onClick={handel_logout} className={`${navStyle.logout} bi bi-door-open ms-3 me-3`}></i>

@@ -26,7 +26,7 @@ function TopCategory() {
             </div>
             <div className='d-flex flex-wrap ms-lg-4 me-3 mt-3 flex-grow justif-content-center'>
                 {
-                Categories.map((category,key)=>(
+                Categories && Categories.map((category,key)=>(
                     <div 
                     onClick={()=>(courseRelatedCategories(key))}
                     key={key} 

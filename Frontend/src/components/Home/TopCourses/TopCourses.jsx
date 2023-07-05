@@ -9,7 +9,9 @@ function TopCourses() {
     useEffect(() => {
         getCourses().then(courses => {
             console.log(courses);
-            setCourses(courses);
+            if(courses.length > 0) {
+                setCourses(courses);
+            }
         })
     },[])
     const handleDetailsCourse=(id)=>{
@@ -23,7 +25,7 @@ function TopCourses() {
             <div className={`${courseStyle.title} mt-5 ms-lg-4 fs-3`}> Top Courses </div>
             <div className='d-flex ms-lg-4 mt-3 flex-wrap '>
                 {
-                    Courses.map((course,key)=>(
+                    Courses && Courses.map((course,key)=>(
                         <div key={key} onClick={()=>(handleDetailsCourse(key))} className=' flex-shrink-1' >
                             <CourseItem key={key} course={course} ></CourseItem>
 

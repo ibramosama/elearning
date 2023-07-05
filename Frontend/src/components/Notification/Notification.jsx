@@ -18,7 +18,7 @@ function Notification(props) {
     },[])
     return ( 
         <div>
-            <ToastContainer className={"toast-position"} />
+            <ToastContainer className={"toast-position me-lg-5"} />
         </div>
      );
 }

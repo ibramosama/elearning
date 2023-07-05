@@ -54,18 +54,11 @@ class InstructorSerializer(serializers.ModelSerializer):
 
 class CourseFieldsSerializer(serializers.ModelSerializer):
     instructor = InstructorSerializer()
-<<<<<<< HEAD
-    category = serializers.ReadOnlyField(source='category.name')
-    class Meta:
-        model = Course
-        fields = ('id', 'title', 'duration', 'price', 'course_image', 'instructor', 'level', 'category')
-=======
     category =serializers.ReadOnlyField(source='category.name')
     class Meta:
         model = Course
         fields = ('id', 'title', 'duration', 'price', 'course_image','instructor','level','category')
     
->>>>>>> 66723d20e03a8d5800a6bda079041d49bb956233
 
 
 class CourseSerializer(serializers.ModelSerializer):
@@ -222,16 +215,23 @@ class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
         fields = ('id', 'course', 'user', 'rating', 'comment')
-
+class InstructorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'image')
 class CourseListSerializer(serializers.ModelSerializer):
     demo = serializers.SerializerMethodField()
     description = serializers.SerializerMethodField()
     sections=serializers.SerializerMethodField()
     category =serializers.ReadOnlyField(source='category.name')
+    # instructor = serializers.ReadOnlyField(source='instructor.username')
+    instructor = InstructorSerializer()
     class Meta:
         model = Course
-        fields = ('id', 'title', 'duration', 'price', 'category', 'course_image', 'description', 'demo','sections','level')
-    
+        fields = ('id', 'instructor','title', 'duration', 'price', 'category', 'course_image', 'description', 'demo','sections','level')
+    def get_instructor(self,obj):
+        instructor = User.objects.filter(id= obj.id).first()
+        return instructor
     # def get_category(self,obj):
     #     category = Category.objects.get(pk=obj.)
     #     return category

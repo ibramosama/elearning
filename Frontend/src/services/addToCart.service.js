@@ -23,14 +23,14 @@ const addToCart =async (data)=>{
     )
 }
 
-const getCourseFromCart = async (data)=>{
-    console.log(data)
+const getCourseFromCart = async (id)=>{
+    console.log(id)
     let refresh= localStorage.getItem("refresh");
     let accessToken = localStorage.getItem("access");
     const auth = {
         headers:{Authorization:`Bearer ${accessToken}`}
     }
-    return await axios.get(URL+'course/add-to-cart/', auth)
+    return await axios.get(URL+'course/view-cart/'+`${id}`, auth)
     .then(res =>{
         if(res.data.length != 0 ){
             return res.data
