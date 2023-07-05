@@ -56,6 +56,7 @@ class CourseByCategoryList(generics.ListAPIView):
 
     def get_queryset(self):
         category_id = self.kwargs['category_id']
+        
         return Course.objects.filter(category_id=category_id)
 
 class CourseviewList(generics.ListAPIView):

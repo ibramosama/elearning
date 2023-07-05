@@ -54,11 +54,11 @@ function CourseDetails() {
                     <div className='d-flex'>
                         <div className='me-4'>4.38 /5 </div>
                         <div className=''>
-                            <i class="bi bi-star"> </i>
-                            <i class="bi bi-star"> </i>
-                            <i class="bi bi-star"> </i>
-                            <i class="bi bi-star"> </i>
-                            <i class="bi bi-star"> </i>
+                            <i className="bi bi-star"> </i>
+                            <i className="bi bi-star"> </i>
+                            <i className="bi bi-star"> </i>
+                            <i className="bi bi-star"> </i>
+                            <i className="bi bi-star"> </i>
                         </div>
                     </div>
                    
@@ -106,7 +106,7 @@ function CourseDetails() {
                         <hr className={`${courseStyle.line_details}`}></hr>
                         <div className='d-flex justify-content-between'>
                             <div>
-                                <i class={`${courseStyle.icon} bi bi-play-circle-fill me-4`}></i>
+                                <i className={`${courseStyle.icon} bi bi-play-circle-fill me-4`}></i>
                                 Lecture
                             </div>
                             <div className='opacity-75'>{NumLectures} lectures</div>
@@ -114,7 +114,7 @@ function CourseDetails() {
                         <hr className={`${courseStyle.line_details}`}></hr>
                         <div className='d-flex justify-content-between'>
                             <div>
-                                <i class={`${courseStyle.icon} bi bi-tag-fill me-4`}></i>
+                                <i className={`${courseStyle.icon} bi bi-tag-fill me-4`}></i>
                                 Category
                             </div>
                             <div className='opacity-75'>{CourseData?.category}</div>
@@ -123,17 +123,17 @@ function CourseDetails() {
                         <div className='mt-5'>
                             <h4>Material Includes</h4>
                             <div className='fs-5'>
-                                <i class={`${courseStyle.mat_include} bi bi-check2 ms-3 me-3`}></i>
+                                <i className={`${courseStyle.mat_include} bi bi-check2 ms-3 me-3`}></i>
                                 <span>Videos</span>
                             </div>
                             <div className='fs-5'>
-                                <i class={`${courseStyle.mat_include} bi bi-check2 ms-3 me-3`}></i>
+                                <i className={`${courseStyle.mat_include} bi bi-check2 ms-3 me-3`}></i>
                                 <span>Quizes</span>
                             </div>
                         </div>
                         
-                        <button type="button" class={`${courseStyle.btn_crt} btn btn-primary w-100 mt-5 p-3 fs-5 mb-2`}>Add To Cart</button>
-                        <button type="button" class={`${courseStyle.btn_wish} btn btn-primary w-100 mt-1 p-3 fs-5 mb-2`}>Add To Wishlist</button>
+                        <button type="button" className={`${courseStyle.btn_crt} btn btn-primary w-100 mt-5 p-3 fs-5 mb-2`}>Add To Cart</button>
+                        <button type="button" className={`${courseStyle.btn_wish} btn btn-primary w-100 mt-1 p-3 fs-5 mb-2`}>Add To Wishlist</button>
                     </div>
                     <CourseCategory/>
                 </div>

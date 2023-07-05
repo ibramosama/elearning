@@ -1,5 +1,4 @@
-
-function CourseInstructor() {
+function Cart() {
     return ( 
         <div>
             
@@ -7,4 +6,4 @@ function CourseInstructor() {
     );
 }
 
-export default CourseInstructor;
+export default Cart;

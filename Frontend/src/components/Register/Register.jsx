@@ -6,10 +6,13 @@ function Register() {
     const navigate = useNavigate();
     const imageMimeType = /image\/(png|jpg|jpeg)/i;
     let [FormsValues ,setFormsValues] = useState({
+        username:'',
         firstname:'',
         lastname:'',
         email:'',
         password:'',
+        phone:'',
+        role:'student',
         image:null
     });
 
@@ -19,8 +22,12 @@ function Register() {
     let Inputpassword =useRef(null)
     let Inputfirstname =useRef(null)
     let Inputlastname =useRef(null)
+    let Inputusername= useRef(null)
+    let Inputphone=useRef(null)
     //  errer msg if field have something wrong 
     let [errors ,setErrors] = useState({
+        username:null,
+        phone:null,
         firstname:null,
         lastname:null,
         email:null,
@@ -32,16 +39,26 @@ function Register() {
         setRegisterError(false)
         event.preventDefault();
         console.log(errors.email ,errors.password)
-        if(errors.email || errors.password || errors.firstname || errors.lastname){
+        if(errors.email 
+            || errors.password 
+            || errors.firstname 
+            || errors.lastname
+            || errors.phone
+            || errors.username
+            ){
             setErrorsRun(true);
         }else{
             if(FormsValues){
+                console.log(FormsValues.image)
                 let formData = new FormData(); 
                 formData.append('email',FormsValues.email)
+                formData.append("username",FormsValues.username)
                 formData.append("first_name",FormsValues.firstname)
                 formData.append("last_name",FormsValues.lastname)
                 formData.append("password",FormsValues.password);
-                formData.append('file',FormsValues.image)
+                formData.append("phone_number",FormsValues.phone)
+                formData.append('image',FormsValues.image)
+                formData.append('role',FormsValues.role)
                 register(formData).then((result)=>{
                     console.log(result)
                     if(result == 201){
@@ -65,6 +82,7 @@ function Register() {
         // eslint-disable-next-line
         // setErrorsRun(false)
         console.log(errors)
+        console.log(e.target)
         if(e.target.name == "email"){
             let regex = new RegExp(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/);
             console.log(regex.test(e.target.value))
@@ -78,6 +96,30 @@ function Register() {
             }
             console.log(errors)
         }
+        if(e.target.name == "username"){
+            
+
+            if( e.target.value ){
+                setErrors({...errors,username:null})
+                setFormsValues({...FormsValues, [e.target.name]:e.target.value})
+            }else{
+                setErrors({...errors,username:'invalid username'});
+            }
+            console.log(errors)
+            
+        }
+        if(e.target.name == "phone"){
+            
+
+            if( e.target.value ){
+                setErrors({...errors,phone:null})
+                setFormsValues({...FormsValues, [e.target.name]:e.target.value})
+            }else{
+                setErrors({...errors,username:'invalid phone'});
+            }
+            console.log(errors)
+            
+        }
         if(e.target.name == "firstname"){
             
 
@@ -85,7 +127,7 @@ function Register() {
                 setErrors({...errors,firstname:null})
                 setFormsValues({...FormsValues, [e.target.name]:e.target.value})
             }else{
-                setErrors({...errors,firstname:'invalid username'});
+                setErrors({...errors,firstname:'invalid firstname'});
             }
             console.log(errors)
             
@@ -97,7 +139,7 @@ function Register() {
               setErrors({...errors,lastname:null})
               setFormsValues({...FormsValues, [e.target.name]:e.target.value})
           }else{
-              setErrors({...errors,lastname:'invalid username'});
+              setErrors({...errors,lastname:'invalid lastname'});
           }
           console.log(errors)
           
@@ -112,12 +154,18 @@ function Register() {
                 setErrors({...errors,password:'password must be at least 4 characters !'});
             }
         }
-        if(e.target.name == "profile_image"){
+        if(e.target.name == "image"){
           console.log(e.target.value)
           console.log(e.target.files[0])
           if(e.target.files[0]){  
             setFormsValues({...FormsValues,[e.target.name]:e.target.files[0]})
           } 
+        }
+        if(e.target.name == "role"){
+            console.log(e.target.value)
+            if(e.target.value){
+                setFormsValues({...FormsValues, [e.target.name]:e.target.value})
+            }
         }
 
         // check disabled submit btn based on data
@@ -139,7 +187,6 @@ function Register() {
         <div className={`${style.register_from} container`}>
             <div className="row justify-content-center mt-5">
 
-                <h1 className='text-center mt-5 mb-3 '>Register Now </h1>
                 <div className={`${style.sign_form}`}>
                     <div className={`${style.form_content}`}>
                         <div className={`${style.header_from}`}>Sign Up Udemy</div>
@@ -182,6 +229,20 @@ function Register() {
                                     
                                 ):null}
                             <form onSubmit={handelsubmit}>
+                                <div className="mb-2">
+                                    <label htmlFor="exampleInputusername1" className={`${style.form_label}`}>User Name </label>
+                                    <input type="text" 
+                                    onChange={operationHandeler} 
+                                    ref={Inputusername}
+                                    name="username"
+                                    className={`${(errors.username && errorRun) ? style.error_input:style.form_input}`}
+                                    id="exampleInputEmail1" 
+                                    placeholder=' mahmoud0020  ' aria-describedby="emailHelp"/>
+                                    {/* validation error msg  */}
+                                    <div className={`${style.errorMsg}`}>
+                                    {(errors.username && errorRun) ? errors.username : null}
+                                    </div>
+                                </div>
                                 <div className="mb-2">
                                     <label htmlFor="exampleInputusername1" className={`${style.form_label}`}>First Name </label>
                                     <input type="text" 
@@ -239,12 +300,40 @@ function Register() {
                                     </div>
                                 </div>
                                 <div className="mb-2">
+                                    <label htmlFor="exampleInputusername1" className={`${style.form_label}`}>Phone </label>
+                                    <input type="text" 
+                                    onChange={operationHandeler} 
+                                    ref={Inputphone}
+                                    name="phone"
+                                    className={`${(errors.phone && errorRun) ? style.error_input:style.form_input}`}
+                                    id="exampleInputEmail1" 
+                                    placeholder=' 01112223334  ' aria-describedby="emailHelp"/>
+                                    {/* validation error msg  */}
+                                    <div className={`${style.errorMsg}`}>
+                                    {(errors.phone && errorRun) ? errors.phone : null}
+                                    </div>
+                                </div>
+                                <div className="mb-2">
                                     <label for="formFile" class={`${style.form_label}`}>Upload Your image</label>
-                                    <input accept="image/*" 
+                                    <input  
+                                    name="image"
+                                    accept="image/jpeg,image/png,image/gif"
                                     onChange={operationHandeler} 
                                     class={`${style.form_input}`} 
-                                    id="formFileLg" name="profile_image" type="file"></input>
+                                    id="formFileLg" type="file"></input>
                                     
+                                </div>
+                                <div className="mb-2">
+                                    <label for="exampleFormControlInput1" class="form-label">Type User</label>
+                                    <select 
+                                    onChange={operationHandeler} 
+                                    class="form-select"
+                                    aria-label="Default select example">
+                                        
+                                        <option selected value="student">Student</option>
+                                        <option value="instructor">Instructor</option>
+                                        
+                                    </select>
                                 </div>
                              
           

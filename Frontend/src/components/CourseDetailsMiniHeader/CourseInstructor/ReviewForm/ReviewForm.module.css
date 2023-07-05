@@ -9,15 +9,15 @@
   text-align: left;
 }
 
-h3 {
+.h3_reviewForm {
   margin-bottom: 30px;
   font-size: 24px;
   color: #333;
 }
-h5{
+.h5_reviewForm{
     color: #383434;
 }
-button {
+.button_reviewForm {
   margin-bottom: 20px;
   padding: 10px 20px;
   font-size: 16px;
@@ -65,7 +65,7 @@ button {
   width: 48%;
 }
 
-textarea {
+.random_textarea {
   padding: 10px;
   margin-bottom: 10px;
   border: 1px solid #ccc;

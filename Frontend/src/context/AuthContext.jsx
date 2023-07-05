@@ -8,12 +8,13 @@ const AuthProvider = ({children}) => {
     const [authUser, setAuthUser] = useState({});
     let [loading,setLoading]=useState(true);
     let token = localStorage.getItem("access");
-    useEffect(() =>{
-        if(token){
-            setAuthUser(token)
-
+    
+    useEffect(() => {
+        if (token) {
+          setAuthUser(jwt_decode(token))
         }
-
+    }, [token]);
+    useEffect(() =>{
         if (loading && authUser){
             updateToken();
             setLoading(false);

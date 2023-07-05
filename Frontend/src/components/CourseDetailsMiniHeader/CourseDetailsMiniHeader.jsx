@@ -29,15 +29,15 @@ function CourseDetailsMiniHeader(props) {
                 <button 
                 onClick={handleOverview}
                 type="button" 
-                class="btn btn-light ms-3 me-3">Overview</button>
+                className={`btn btn-light ms-3 me-3 ${headerStyle.mini_header_button}`}>Overview</button>
                 <button 
                 onClick={handleCurriculum}
                 type="button" 
-                class="btn btn-light ms-3 me-3">Curriculum</button>
+                className={`btn btn-light ms-3 me-3 ${headerStyle.mini_header_button}`}>Curriculum</button>
                 <button 
                 onClick={handleInstructor}
                 type="button" 
-                class="btn btn-light ms-3 me-3">Instructor</button>
+                className={`btn btn-light ms-3 me-3 ${headerStyle.mini_header_button}`}>Instructor</button>
             </div>
             <div className='mt-4'>
                 {showOverview   && <CourseOverview data= {props.data}></CourseOverview>}
