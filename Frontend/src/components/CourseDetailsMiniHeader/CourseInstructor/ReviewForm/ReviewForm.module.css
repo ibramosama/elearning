@@ -14,9 +14,11 @@ h3 {
   font-size: 24px;
   color: #333;
 }
-h5{
-    color: #383434;
+
+h5 {
+  color: #383434;
 }
+
 button {
   margin-bottom: 20px;
   padding: 10px 20px;
@@ -43,6 +45,14 @@ button {
 .stars {
   color: gold;
   font-size: 24px;
+}
+
+.filledStar {
+  color: gold;
+}
+
+.emptyStar {
+  color: #ccc;
 }
 
 .formGroup {
@@ -102,7 +112,7 @@ textarea {
 /* Responsive Styles */
 @media only screen and (max-width: 600px) {
   .reviewForm {
-    width: 80%;
+    width: 90%;
     margin-left: 10px;
     margin-top: 30px;
   }
@@ -110,7 +120,7 @@ textarea {
 
 @media only screen and (min-width: 601px) and (max-width: 900px) {
   .reviewForm {
-    width: 70%;
+    width: 90%;
     margin-left: 20px;
     margin-top: 20px;
   }
@@ -118,7 +128,7 @@ textarea {
 
 @media only screen and (min-width: 901px) {
   .reviewForm {
-    width: 80%;
+    width: 96%;
     margin-left: 30px;
     margin-top: 150px;
   }
