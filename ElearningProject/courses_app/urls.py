@@ -9,6 +9,8 @@ from .views import (
     VideoList,
     VideoDetail, ReviewListCreateAPIView, CourseListView, EnrollView, AddToCartView, CourseviewList,
     CourseByCategoryList,
+    CartView
+    
 )
 
 urlpatterns = [
@@ -28,4 +30,6 @@ urlpatterns = [
     path('category/<int:category_id>/courses/', CourseByCategoryList.as_view(), name='course-by-category-list'),
     path('enrollments/', EnrollView.as_view(), name='enrollments'),
     path('add-to-cart/', AddToCartView.as_view(), name='add-to-cart'),
+    path('view-cart/<int:pk>', CartView.as_view(), name='add-to-cart'),
+    
 ]

@@ -2,9 +2,13 @@ import courseStyle from './CourseDetails.module.css';
 import CourseCategory from '../CourseCategory/CourseCategory';
 import CourseDetailsMiniHeader from '../CourseDetailsMiniHeader/CourseDetailsMiniHeader';
 import {useParams , useNavigate} from 'react-router-dom';
-import { useState ,useEffect } from 'react';
+import { useState ,useEffect,useContext } from 'react';
 import {getCourseDetails} from '../../services/course_details.service'
+import { AuthContext } from '../../context/AuthContext';
+import { addToCart } from '../../services/addToCart.service';
 function CourseDetails() {
+    const {authUser}=useContext(AuthContext)
+
     const navigate = useNavigate()
     const [CourseData,setCourseData] =useState({});
     let [NumLectures,setNumlectures]= useState(0)
@@ -35,6 +39,21 @@ function CourseDetails() {
             return 0
         }
         
+    }
+    const handleAddToCart=()=>{
+        if(authUser.user_id){
+            addToCart({
+                user:authUser.user_id,
+                courses:[CourseData.id],
+                // course:CourseData.id
+            }).then((res)=>{
+                console.log(res)
+            }).catch((error)=>{
+                console.log(error)
+            })
+        }else{
+            navigate('/login')
+        }
     }
 
     return ( 
@@ -132,8 +151,11 @@ function CourseDetails() {
                             </div>
                         </div>
                         
-                        <button type="button" className={`${courseStyle.btn_crt} btn btn-primary w-100 mt-5 p-3 fs-5 mb-2`}>Add To Cart</button>
-                        <button type="button" className={`${courseStyle.btn_wish} btn btn-primary w-100 mt-1 p-3 fs-5 mb-2`}>Add To Wishlist</button>
+                        <button 
+                        onClick={handleAddToCart}
+                        type="button" 
+                        className={`${courseStyle.btn_crt} btn btn-primary w-100 mt-5 p-3 fs-5 mb-2`}>Add To Cart</button>
+                       
                     </div>
                     <CourseCategory/>
                 </div>
