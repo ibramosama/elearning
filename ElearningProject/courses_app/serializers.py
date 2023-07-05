@@ -54,18 +54,25 @@ class InstructorSerializer(serializers.ModelSerializer):
 
 class CourseFieldsSerializer(serializers.ModelSerializer):
     instructor = InstructorSerializer()
+<<<<<<< HEAD
+    category = serializers.ReadOnlyField(source='category.name')
+    class Meta:
+        model = Course
+        fields = ('id', 'title', 'duration', 'price', 'course_image', 'instructor', 'level', 'category')
+=======
     category =serializers.ReadOnlyField(source='category.name')
     class Meta:
         model = Course
         fields = ('id', 'title', 'duration', 'price', 'course_image','instructor','level','category')
     
+>>>>>>> 66723d20e03a8d5800a6bda079041d49bb956233
 
 
 class CourseSerializer(serializers.ModelSerializer):
     category = CategorySerializer()
     instructor = serializers.StringRelatedField(default=serializers.CurrentUserDefault())
     students = serializers.StringRelatedField(many=True, read_only=True, default=[])
-    sections = SectionSerializer(many=True)
+    sections = SectionSerializer(many=True, default=[])
 
     class Meta:
         model = Course
