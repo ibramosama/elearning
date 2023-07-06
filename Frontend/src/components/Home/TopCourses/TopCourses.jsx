@@ -7,12 +7,22 @@ function TopCourses() {
     let [Courses,setCourses] =useState([])
     const navigate =useNavigate()
     useEffect(() => {
+<<<<<<< HEAD
+        getCourses().then(response => {
+            console.log(response);
+            const courses = response.data; // Assuming the courses array is inside the 'data' property
+            setCourses(courses);
+          });
+          
+          
+=======
         getCourses().then(courses => {
             console.log(courses);
             
                 setCourses(courses);
             
         })
+>>>>>>> 6951b16d5003d2e50d1be31e6508706d5575968f
     },[])
     const handleDetailsCourse=(id)=>{
         console.log(id)

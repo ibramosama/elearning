@@ -1,47 +1,53 @@
-import React from 'react';
-import styles from './InstructorProfile.module.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar } from '@fortawesome/free-solid-svg-icons';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import './CourseInfoCard.css'; // Import the CSS file
 
-const CourseInfoCard = () => {
+const InstructorCourses = () => {
+  const [courses, setCourses] = useState([]);
+  const token = localStorage.getItem('access');
+
+  useEffect(() => {
+    // Fetch instructor courses
+    axios
+      .get('http://localhost:8000/course/courses/instructor/', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        setCourses(response.data.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [token]);
+
+  if (courses.length === 0) {
+    return <p>Loading courses...</p>;
+  }
+
   return (
-    <>
-      {/* Card 1 */}
-      <div className={styles.card}>
-        <div className={styles.imageContainer}>
-          <img className={styles.courseImage} src="https://images.pexels.com/photos/3419718/pexels-photo-3419718.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Course" />
-        </div>
-        <div className={styles.content}>
-          <div className={styles.rating}>
-           
-          <span className="stars" style={{ color: '#FFD700' }}>
-  <FontAwesomeIcon icon={faStar} />
-  <FontAwesomeIcon icon={faStar} />
-  <FontAwesomeIcon icon={faStar} />
-  <FontAwesomeIcon icon={faStar} />
-  <FontAwesomeIcon icon={faStar} />
-</span>
-
-            <span className="rating-value">4.50</span>
-            <span className="rating-count">(12 ratings)</span>
+    <div className="instructor-courses-container">
+      <h2 className="instructor-courses-heading">Instructor Courses</h2>
+      <div className="course-list">
+        {courses.map((course) => (
+          <div key={course.id} className="course-card">
+            <div className="course-thumbnail">
+              <img src={course.course_image} alt={course.title} />
+            </div>
+            <div className="course-details">
+              <h3 className="course-title">{course.title}</h3>
+              <p className="course-description">{course.description}</p>
+              <div className="course-info">
+                <p className="course-price">${course.price}</p>
+                <p className="course-duration">{course.duration} hours</p>
+              </div>
+            </div>
           </div>
-          <h3 className={styles.courseName}>Photography Course</h3>
-          <p className={styles.status}>Status: Pending</p>
-          <p className={styles.duration}>Duration: 1h 5m</p>
-          <p className={styles.students}>Students: 0</p>
-          <p className={styles.price}>Price: $100.00</p>
-          <div className={styles.buttons}>
-            <button className={styles.editButton}>Edit</button>
-            <button className={styles.deleteButton}>Delete</button>
-            <button className={styles.duplicateButton}>Duplicate</button>
-          </div>
-        </div>
+        ))}
       </div>
-
-      
-      
-    </>
+    </div>
   );
 };
 
-export default CourseInfoCard;
+export default InstructorCourses;

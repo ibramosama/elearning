@@ -5,7 +5,7 @@ from rest_framework_simplejwt.views import (
 )
 
 from authentication_app.views import UserRegistrationView, SendOTPView, VerifyOTPView, UserLoginAPIView, \
-    UserPasswordResetConfirmView, UserPasswordResetView, UserProfileUpdateView
+    UserPasswordResetConfirmView, UserPasswordResetView, UserProfileUpdateView, UserProfileView
 
 from django.contrib import admin
 from django.urls import path, include
@@ -26,6 +26,7 @@ urlpatterns = [
     path('oauth/', include('social_django.urls', namespace='social')), 
     path('auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('Assign/', include('Assign_Quizzes.urls')),
+    path('user/profile/', UserProfileView.as_view(), name='user-profile'),
 
     path('password/reset/', UserPasswordResetView.as_view(), name='user-password-reset'),
     path('password/reset/confirm/', UserPasswordResetConfirmView.as_view(), name='user-password-reset-confirm'),

@@ -308,9 +308,9 @@ const CreateCourseForm = () => {
              <label htmlFor={`quiz-${sectionIndex}-${quizIndex}-instructions`}>Instructions:</label>
              <textarea id={`quiz-${sectionIndex}-${quizIndex}-instructions`} name="instructions" value={quiz.instructions} onChange={(event) => handleQuizChange(sectionIndex, quizIndex, event)} />
              <label htmlFor={`quiz-${sectionIndex}-${quizIndex}-start_time`}>Start Time:</label>
-             <input type="datetime-local" id={`quiz-${sectionIndex}-${quizIndex}-start_time`} name="start_time" value={quiz.start_time} onChange={(event) => handleQuizChange(sectionIndex, quizIndex, event)} />
+             <input type="time" id={`quiz-${sectionIndex}-${quizIndex}-start_time`} name="start_time" value={quiz.start_time} onChange={(event) => handleQuizChange(sectionIndex, quizIndex, event)} />
              <label htmlFor={`quiz-${sectionIndex}-${quizIndex}-end_time`}>End Time:</label>
-             <input type="datetime-local" id={`quiz-${sectionIndex}-${quizIndex}-end_time`} name="end_time" value={quiz.end_time} onChange={(event) => handleQuizChange(sectionIndex, quizIndex, event)} />
+             <input ttype="time" id={`quiz-${sectionIndex}-${quizIndex}-end_time`} name="end_time" value={quiz.end_time} onChange={(event) => handleQuizChange(sectionIndex, quizIndex, event)} />
              <label htmlFor={`quiz-${sectionIndex}-${quizIndex}-deadline_days`}>Deadline (days):</label>
              <input type="number" id={`quiz-${sectionIndex}-${quizIndex}-deadline_days`} name="deadline_days" value={quiz.deadline_days} onChange={(event) => handleQuizChange(sectionIndex, quizIndex, event)} />
              <button type="button" onClick={() => handleRemoveQuiz(sectionIndex, quizIndex)}>Remove Quiz</button>

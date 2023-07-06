@@ -12,28 +12,41 @@ class AssignmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Assignment
         fields = ('id', 'title', 'instructions', 'deadline_days', 'file')
-
-
-class QuizSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Quiz
-        fields = ('id', 'title','instructions','start_time', 'end_time', 'deadline_days')
-
-
-
 class QuizOptionSerializer(serializers.ModelSerializer):
     class Meta:
         model = QuizOption
-        fields = ('option_id', 'question', 'option_text', 'is_correct')
+        fields = ('option_text', 'is_correct')
 
 class QuizQuestionSerializer(serializers.ModelSerializer):
-    options = QuizOptionSerializer(many=True)
+    options = QuizOptionSerializer(many=True, source='quizoption_set', read_only=True)
 
     class Meta:
         model = QuizQuestion
-        fields = ('question_id', 'quiz', 'question_text', 'options')
+        fields = ('question_text', 'options')
 
+    def create(self, validated_data):
+        options_data = validated_data.pop('quizoption_set')
+        question = QuizQuestion.objects.create(**validated_data)
+        for option_data in options_data:
+            QuizOption.objects.create(question=question, **option_data)
+        return question
+
+class QuizSerializer(serializers.ModelSerializer):
+    questions = QuizQuestionSerializer(many=True)
+
+    class Meta:
+        model = Quiz
+        fields = ('title', 'course', 'instructions', 'start_time', 'end_time', 'deadline_days', 'section', 'questions')
+
+    def create(self, validated_data):
+        questions_data = validated_data.pop('questions')
+        quiz = Quiz.objects.create(**validated_data)
+        for question_data in questions_data:
+            options_data = question_data.pop('options', [])  # Use empty list as default
+            question = QuizQuestion.objects.create(quiz=quiz, **question_data)
+            for option_data in options_data:
+                QuizOption.objects.create(question=question, **option_data)
+        return quiz
 
 class AssignmentSubmissionSerializer(serializers.ModelSerializer):
     class Meta:
@@ -62,7 +75,6 @@ class AssignmentSubmissionSerializer(serializers.ModelSerializer):
                     if certificate_serializer.is_valid():
                         certificate_serializer.save()
         return assignment_submission
-
 
 class QuizSubmissionSerializer(serializers.ModelSerializer):
     class Meta:
@@ -97,6 +109,35 @@ class QuizSubmissionSerializer(serializers.ModelSerializer):
 
         return quiz_submission
 
+    def calculate_grade(self, quiz_submission):
+        # Get the related quiz instance
+        quiz = quiz_submission.quiz
+
+        # Get the related quiz questions with their options
+        quiz_questions = quiz.questions.prefetch_related('options')
+
+        # Get the submitted answers for the quiz submission
+        submission_answers = quiz_submission.submission_answers.all()
+
+        correct_answers_count = 0
+
+        # Loop through the quiz questions and compare the submitted answers with the correct options
+        for question in quiz_questions:
+            # Get the correct options for the current question
+            correct_options = question.options.filter(is_correct=True).values_list('id', flat=True)
+
+            # Get the submitted answer for the current question (if available)
+            submission_answer = submission_answers.filter(question=question).first()
+
+            # Check if the submitted answer matches the correct options
+            if submission_answer and submission_answer.option.id in correct_options:
+                correct_answers_count += 1
+
+        # Calculate the grade as a percentage of correct answers
+        total_questions = quiz_questions.count()
+        grade = (correct_answers_count / total_questions) * 100
+
+        return round(grade, 2)
 
 class CertificateSerializer(serializers.ModelSerializer):
     class Meta:

@@ -1,0 +1,84 @@
+.user-profile {
+    padding: 1rem;
+    background-color: #f2f2f2;
+    border-radius: 5px;
+  }
+  
+  .user-profile .profile-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  
+  .user-profile .profile-header .avatar {
+    width: 80px;
+    height: 80px;
+    margin-right: 1rem;
+  }
+  
+  .user-profile .profile-info {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .user-profile .profile-info h2 {
+    margin: 0;
+    font-size: 1.5rem;
+  }
+  
+  .user-profile .profile-info p {
+    margin: 0;
+    margin-top: 0.5rem;
+  }
+  
+  .user-profile .update-button {
+    background-color: #4285f4;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .user-profile .update-button:hover {
+    background-color: #0d8af8;
+  }
+  
+  .user-profile .profile-edit-form {
+    margin-top: 1rem;
+  }
+  
+  .user-profile .profile-edit-form label {
+    margin-top: 0.5rem;
+    font-weight: bold;
+  }
+  
+  .user-profile .profile-edit-form input[type="text"],
+  .user-profile .profile-edit-form input[type="email"],
+  .user-profile .profile-edit-form input[type="password"],
+  .user-profile .profile-edit-form input[type="file"] {
+    margin-top: 0.25rem;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .user-profile .profile-edit-form button {
+    margin-top: 0.5rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .user-profile .profile-edit-form .save-button {
+    background-color: #4285f4;
+    color: white;
+  }
+  
+  .user-profile .profile-edit-form .cancel-button {
+    background-color: #ccc;
+    color: black;
+  }
+  
+  

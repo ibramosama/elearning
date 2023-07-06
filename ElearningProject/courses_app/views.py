@@ -5,7 +5,11 @@ from rest_framework.response import Response
 from rest_framework import generics, permissions, status, filters,viewsets
 from .models import Category, Course, Section, Video, Review, Cart
 from .serializers import CategorySerializer, CourseSerializer, SectionSerializer, VideoSerializer, ReviewSerializer, \
+<<<<<<< HEAD
+    CourseListSerializer, CartSerializer, EnrollmentSerializer, CourseFieldsSerializer, CartCourseSerializer
+=======
     CourseListSerializer, CartSerializer, EnrollmentSerializer, CourseFieldsSerializer,CartCourseSerializer
+>>>>>>> 6951b16d5003d2e50d1be31e6508706d5575968f
 from .permissions import (
     IsInstructor,
     IsAdmin,
@@ -13,6 +17,7 @@ from .permissions import (
     IsAdminOrInstructorOrEnrolledStudent,
     IsCourseInstructorOrAdmin,
     IsCourseApproved, IsReviewOwnerOrReadOnly, IsStudent, IsCourseApprovedOrReadOnly, IsInstructorOrReadOnly,
+    IsInstructorWithCourse,
 )
 
 User = get_user_model()
@@ -38,8 +43,6 @@ class CourseList(generics.ListCreateAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        print(self)
-        print(user)
         if user.role == 'admin' or user.is_staff:
             # Admin and staff can view all courses
             return Course.objects.all()
@@ -157,6 +160,15 @@ class CourseListView(generics.ListAPIView,generics.RetrieveAPIView):
     
 
 
+<<<<<<< HEAD
+class ApprovedCourseListByInstructor(generics.ListAPIView):
+    serializer_class = CourseSerializer
+    permission_classes = [IsInstructorWithCourse]
+
+    def get_queryset(self):
+        instructor = self.request.user
+        return Course.objects.filter(instructor=instructor, is_approved=True)
+=======
 # class AddToCartView(generics.CreateAPIView):
 #     serializer_class = CartSerializer
 #     permission_classes = [IsStudent]
@@ -166,6 +178,7 @@ class CourseListView(generics.ListAPIView,generics.RetrieveAPIView):
 #         courses = serializer.validated_data.get('courses', [])
 #         cart = Cart.objects.create(user=user)
 #         cart.courses.set(courses)
+>>>>>>> 6951b16d5003d2e50d1be31e6508706d5575968f
 
 class AddToCartView(generics.CreateAPIView):
     serializer_class = CartSerializer
@@ -174,7 +187,10 @@ class AddToCartView(generics.CreateAPIView):
     def perform_create(self, serializer):
         user = self.request.user
         courses = serializer.validated_data.get('courses', [])
+<<<<<<< HEAD
+=======
 
+>>>>>>> 6951b16d5003d2e50d1be31e6508706d5575968f
         try:
             cart = Cart.objects.get(user=user)
             for course in courses:
@@ -183,6 +199,36 @@ class AddToCartView(generics.CreateAPIView):
         except Cart.DoesNotExist:
             cart = Cart.objects.create(user=user)
             cart.courses.set(courses)
+<<<<<<< HEAD
+class SectionListByCourse(generics.ListAPIView):
+    serializer_class = SectionSerializer
+    permission_classes = [IsInstructorWithCourse]
+
+    def get_queryset(self):
+        course_id = self.kwargs['course_id']
+        return Section.objects.filter(course_id=course_id)
+
+class CourseListByInstructor(generics.ListAPIView):
+    serializer_class = CourseSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        instructor = self.request.user
+        instructor_courses = Course.objects.filter(instructor=instructor)
+        return instructor_courses
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        data = serializer.data
+        response_data = {
+            'status': status.HTTP_200_OK,
+            'message': 'Courses retrieved successfully.',
+            'data': data
+        }
+        return Response(response_data, status=status.HTTP_200_OK)
+
+=======
 # class AddToCartView(generics.CreateAPIView):
 #     serializer_class = CartSerializer
 #     permission_classes = [IsAuthenticated]
@@ -212,14 +258,18 @@ class AddToCartView(generics.CreateAPIView):
 #         return Response(serializer.data)
         
         
+>>>>>>> 6951b16d5003d2e50d1be31e6508706d5575968f
 class CartView(generics.ListAPIView,generics.RetrieveAPIView):
     serializer_class = CartCourseSerializer
     permission_classes = [IsStudent]
     def get_queryset(self):
         user = self.kwargs.get('pk')
         return Cart.objects.filter(user=user)
+<<<<<<< HEAD
+=======
     
 
+>>>>>>> 6951b16d5003d2e50d1be31e6508706d5575968f
 class VideoList(generics.ListCreateAPIView):
     serializer_class = VideoSerializer
     permission_classes = [IsAuthenticated]
@@ -254,3 +304,11 @@ class EnrollView(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+class EnrolledCourseList(generics.ListAPIView):
+    serializer_class = CourseSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        student = self.request.user
+        return Course.objects.filter(students=student)

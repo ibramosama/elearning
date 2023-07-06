@@ -1,0 +1,98 @@
+.container1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.form {
+  background-color: #9f9f9f;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 24px;
+  width: 400px;
+}
+
+.form h2 {
+  margin-top: 0;
+  margin-bottom: 24px;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.form label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.form input,
+.form textarea,
+.form select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+
+.form select {
+  height: 36px;
+}
+
+.form textarea {
+  height: 120px;
+}
+
+.form button {
+  background-color: #4285f4;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.form button[type="submit"] {
+  background-color: #4caf50;
+}
+
+.form button[type="button"] {
+  background-color: #f44336;
+}
+
+.form button:not(:last-child) {
+  margin-right: 8px;
+}
+
+.question {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 16px;
+  margin-bottom: 16px;
+  background-color: rgb(197, 228, 118);
+}
+
+
+.question {
+  margin-bottom: 20px;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.option input[type="text"] {
+  width: 80%;
+}
+
+.option label {
+  margin-left: 10px;
+}
+
+.error {
+  color: red;
+  margin-top: 5px;
+}

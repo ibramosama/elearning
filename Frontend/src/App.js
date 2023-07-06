@@ -34,13 +34,19 @@ function App() {
         <Route path='/profile' element={<InstructorProfile></InstructorProfile>}></Route>
         
         <Route element={<MainNavigation></MainNavigation>}>
+<<<<<<< HEAD
+          <Route path='/profile' element={<InstructorProfile></InstructorProfile>}></Route>
+=======
           <Route path='/cart' element={<Cart/>}></Route>
           <Route path='/courses' element={<Courses/>}></Route>
+>>>>>>> 6951b16d5003d2e50d1be31e6508706d5575968f
           <Route path ='/home' element = {<Home/>}/>
           <Route path='/course_details/:id' element={<CourseDetails/>}></Route>
           <Route path ='/login' element ={<Login/>}/>
           <Route path ='/register' element = {<Register/>}/>
           <Route path='/category/:id' element={<CourseByCategory/>}></Route>
+          <Route path='/new-course' element={<NewCourse/>}></Route>
+
         </Route>
         
         {/* admin Routes */}
@@ -52,7 +58,6 @@ function App() {
         <Route element={<Auth allowedRoles={[Role.INSTRUCTOR]}/>}>
           <Route path = '/instructor' element = {<Home/>}/>
         </Route>
-        <Route path ='/createCourse' element={ <NewCourse/>}></Route>
         {/* student Routes */}
         <Route element={<Auth allowedRoles={[Role.STUDENT]}/>}>
           <Route path='/student' element={<Home/>}/>
