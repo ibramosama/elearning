@@ -9,9 +9,9 @@ function TopCourses() {
     useEffect(() => {
         getCourses().then(courses => {
             console.log(courses);
-            if(courses.length > 0) {
+            
                 setCourses(courses);
-            }
+            
         })
     },[])
     const handleDetailsCourse=(id)=>{

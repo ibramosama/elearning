@@ -30,7 +30,7 @@ function Cart() {
     return ( 
         <div className="container-lg container-sm-fluid">
             
-            <div className={`${cartStyle.title} mt-5 ms-lg-4 fs-3`}> Cart
+            <div className={`${cartStyle.title} mt-5 ms-lg-4 fs-1`}> Cart
             </div>
             {
                 Courses && Courses.map((course ,key) => (

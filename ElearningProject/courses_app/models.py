@@ -95,7 +95,7 @@ class Enrollment(models.Model):
 
 
 class Cart(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='cart_items')
     courses = models.ManyToManyField(Course, related_name='carts')
 
     def __str__(self):

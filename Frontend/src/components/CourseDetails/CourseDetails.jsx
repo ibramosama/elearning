@@ -46,6 +46,7 @@ function CourseDetails() {
     const handleAddToCart=()=>{
         SettoastSuccessMsq(false);
         SettoastfailureMsq(false);
+        console.log(CourseData.id)
         if(authUser.user_id){
             addToCart({
                 user:authUser.user_id,

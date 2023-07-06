@@ -21,7 +21,7 @@ function TopCategory() {
     }
     return ( 
         <div className="container-lg container-sm-fluid">
-            <div className={`fs-3 ms-lg-4 ${catStyle.title}`}>
+            <div className={`fs-3 ms-lg-4 mt-3 ${catStyle.title}`}>
                 Top Categoryies
             </div>
             <div className='d-flex flex-wrap ms-lg-4 me-3 mt-3 flex-grow justif-content-center'>

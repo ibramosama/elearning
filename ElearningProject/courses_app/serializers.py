@@ -273,10 +273,11 @@ class CourseListSerializer(serializers.ModelSerializer):
 #     class Meta:
 #         model = Cart
 #         fields = ('user', 'courses', 'total_price')
+
 class CartSerializer(serializers.ModelSerializer):
     total_price = serializers.ReadOnlyField()
-    # user = serializers.ReadOnlyField(source='user.username')  # Add this line
-    
+    courses = serializers.PrimaryKeyRelatedField(many=True, queryset=Course.objects.all())  # Update this line
+
     class Meta:
         model = Cart
         fields = ('user', 'courses','total_price')

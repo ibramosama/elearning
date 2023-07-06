@@ -157,6 +157,16 @@ class CourseListView(generics.ListAPIView,generics.RetrieveAPIView):
     
 
 
+# class AddToCartView(generics.CreateAPIView):
+#     serializer_class = CartSerializer
+#     permission_classes = [IsStudent]
+
+#     def perform_create(self, serializer):
+#         user = self.request.user
+#         courses = serializer.validated_data.get('courses', [])
+#         cart = Cart.objects.create(user=user)
+#         cart.courses.set(courses)
+
 class AddToCartView(generics.CreateAPIView):
     serializer_class = CartSerializer
     permission_classes = [IsStudent]
@@ -164,8 +174,15 @@ class AddToCartView(generics.CreateAPIView):
     def perform_create(self, serializer):
         user = self.request.user
         courses = serializer.validated_data.get('courses', [])
-        cart = Cart.objects.create(user=user)
-        cart.courses.set(courses)
+
+        try:
+            cart = Cart.objects.get(user=user)
+            for course in courses:
+                if course not in cart.courses.all():
+                    cart.courses.add(course)
+        except Cart.DoesNotExist:
+            cart = Cart.objects.create(user=user)
+            cart.courses.set(courses)
 # class AddToCartView(generics.CreateAPIView):
 #     serializer_class = CartSerializer
 #     permission_classes = [IsAuthenticated]

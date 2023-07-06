@@ -1,10 +1,13 @@
 import navStyle from './MainNavigation.module.css';
 import {Outlet ,useNavigate} from 'react-router-dom'
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { AuthContext } from '../../../context/AuthContext';
 import {logout} from '../../../services/user.service'
+import { useEffect } from 'react';
+
 function MainNavigation() {
     const {authUser}=useContext(AuthContext)
+    const [auth ,setAuth]= useState(false)
     const navigate = useNavigate()
     const handleNav =(link)=>{
         navigate(link)
@@ -13,12 +16,21 @@ function MainNavigation() {
         logout()
         window.location.reload()
     }
+    useEffect(()=>{
+        if(authUser.user_id){
+            setAuth(true)
+            
+        }else{
+            setAuth(false)
+            
+        }
+    },[])
     return ( 
         <>
         
         <div className={`${navStyle.mainnav} w-100 pt-3 pb-3`}>
             <div className='container-lg container-sm-fluid d-flex align-item-center justify-content-between flex-wrap '>
-                <div className='d-flex align-item-center'>
+                <div className='d-flex align-items-center'>
                     <div 
                     onClick={()=>(handleNav('/home'))}
                     className={`${navStyle.logo} fs-3 ms-lg-4`} >
@@ -29,8 +41,11 @@ function MainNavigation() {
                     <div className={`${navStyle.search}`}>
                         <input type='text' className={`${navStyle.search_input}`} placeholder='search ...'/>
                     </div>
+                    <div onClick={()=>(handleNav('/home'))} className={`${navStyle.links}`}> Home </div>
+                    <div onClick={()=>(handleNav('/courses'))} className={`${navStyle.links}`} > Courses </div>
+
                 </div>
-                { authUser?.username  ? 
+                { auth  ? 
                 
                     <div className='d-flex align-items-center me-lg-4'>
                         

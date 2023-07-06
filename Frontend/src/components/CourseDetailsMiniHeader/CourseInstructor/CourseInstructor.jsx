@@ -1,3 +1,6 @@
+import YourInstructor from './YourInstructor/YourInstructor'
+import ReviewForm from './ReviewForm/ReviewForm'
+import ReviewsPage from './ReviewsPage/ReviewsPage';
 function CourseInstructor() {
     return ( 
         <div>
