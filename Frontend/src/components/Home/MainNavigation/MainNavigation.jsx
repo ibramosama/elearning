@@ -54,7 +54,7 @@ function MainNavigation() {
                         data-bs-toggle="dropdown" aria-expanded="false"
                         className={`${navStyle.user_name} dropdown`}>{authUser?.username}</div>
                         <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a className="dropdown-item" href="">Profile</a>
+                            <a className="dropdown-item" href="/profile">Profile</a>
                             <a className="dropdown-item" href="/cart">My Cart</a>
                             <a className="dropdown-item" href="" onClick={handel_logout}> Log out </a>
                         </div>

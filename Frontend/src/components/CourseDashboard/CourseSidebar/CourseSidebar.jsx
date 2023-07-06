@@ -3,9 +3,10 @@ import { Link } from "react-router-dom";
 import React, { useRef ,useState,useEffect } from "react";
 import DisplayVideo from './../DisplayVideo/DisplayVideo';
 import {get_course_data} from '../../../services/course_display.service'
-
+import {useParams , useNavigate} from 'react-router-dom';
 
 function CourseSidebar() {
+    const id = useParams()
     let [course_data,Set_course_data] =useState({})
     let [current_video,Set_current_video] =useState({})
     const mySidebar = useRef(null);
@@ -20,7 +21,7 @@ function CourseSidebar() {
         main.current.style.marginLeft = "0";
     };
     useEffect(()=>{
-        get_course_data(6).then((data)=>{
+        get_course_data(id.id).then((data)=>{
             Set_course_data(data)
             console.log(data)
         })

@@ -54,13 +54,6 @@ class InstructorSerializer(serializers.ModelSerializer):
 
 class CourseFieldsSerializer(serializers.ModelSerializer):
     instructor = InstructorSerializer()
-<<<<<<< HEAD
-    category = serializers.ReadOnlyField(source='category.name')
-    class Meta:
-        model = Course
-        fields = ('id', 'title', 'duration', 'price', 'course_image', 'instructor', 'level', 'category')
-=======
->>>>>>> 6951b16d5003d2e50d1be31e6508706d5575968f
     category =serializers.ReadOnlyField(source='category.name')
     class Meta:
         model = Course
@@ -235,18 +228,8 @@ class CourseListSerializer(serializers.ModelSerializer):
     instructor = InstructorSerializer()
     class Meta:
         model = Course
-<<<<<<< HEAD
-        fields = ('id', 'title', 'duration', 'price', 'category', 'course_image', 'description', 'demo','sections','level')
+        fields = ('id', 'title', 'instructor','duration', 'price', 'category', 'course_image', 'description', 'demo','sections','level')
 
-=======
-        fields = ('id', 'instructor','title', 'duration', 'price', 'category', 'course_image', 'description', 'demo','sections','level')
-    def get_instructor(self,obj):
-        instructor = User.objects.filter(id= obj.id).first()
-        return instructor
-    # def get_category(self,obj):
-    #     category = Category.objects.get(pk=obj.)
-    #     return category
->>>>>>> 6951b16d5003d2e50d1be31e6508706d5575968f
     def get_sections(self, obj):
         sections = Section.objects.filter(course=obj.id).all()
         section_data = []
@@ -275,20 +258,6 @@ class CourseListSerializer(serializers.ModelSerializer):
         # Return the description of the course
         return obj.description
 
-<<<<<<< HEAD
-=======
-
-
-
-# class CartSerializer(serializers.ModelSerializer):
-#     total_price = serializers.ReadOnlyField()
-#     # courses = CourseSerializer(many=True)
-    
-#     class Meta:
-#         model = Cart
-#         fields = ('user', 'courses', 'total_price')
-
->>>>>>> 6951b16d5003d2e50d1be31e6508706d5575968f
 class CartSerializer(serializers.ModelSerializer):
     total_price = serializers.ReadOnlyField()
     courses = serializers.PrimaryKeyRelatedField(many=True, queryset=Course.objects.all())  # Update this line

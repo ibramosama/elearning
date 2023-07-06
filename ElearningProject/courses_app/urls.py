@@ -8,14 +8,8 @@ from .views import (
     SectionDetail,
     VideoList,
     VideoDetail, ReviewListCreateAPIView, CourseListView, EnrollView, AddToCartView, CourseviewList,
-<<<<<<< HEAD
     CourseByCategoryList, ApprovedCourseListByInstructor, SectionListByCourse, CourseListByInstructor,
-    EnrolledCourseList,
-=======
-    CourseByCategoryList,
-    CartView
-    
->>>>>>> 6951b16d5003d2e50d1be31e6508706d5575968f
+    EnrolledCourseList,CartView
 )
 
 urlpatterns = [
@@ -36,11 +30,7 @@ urlpatterns = [
     path('category/<int:category_id>/courses/', CourseByCategoryList.as_view(), name='course-by-category-list'),
     path('enrollments/', EnrollView.as_view(), name='enrollments'),
     path('add-to-cart/', AddToCartView.as_view(), name='add-to-cart'),
-<<<<<<< HEAD
+    path('view-cart/<int:pk>', CartView.as_view(),name='view-cart'),
     path('courses/instructor/', CourseListByInstructor.as_view(), name='course-list-by-instructor'),
     path('courses/enrolled/', EnrolledCourseList.as_view(), name='enrolled-courses'),
-=======
-    path('view-cart/<int:pk>', CartView.as_view(), name='add-to-cart'),
-    
->>>>>>> 6951b16d5003d2e50d1be31e6508706d5575968f
 ]

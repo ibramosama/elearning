@@ -3,7 +3,6 @@ import { useEffect,useState } from "react";
 import {getCourses} from "../../services/course_list.service";
 import CourseItem from "../Home/CourseItem/CourseItem";
 import side from './Courses.module.css';
-import ProductList from "./Products/ProductList";
 function Courses() {
     var [Courses ,setCourses] = useState([]);
     useEffect(() => {
@@ -20,8 +19,12 @@ function Courses() {
     return ( 
         <div>
             
+            <div className={`d-flex flex-wrap container`}>
+                { Courses && Courses.map((courses,key )=>(
+                    <CourseItem key={key} course={courses}></CourseItem>
+                ))}
+            </div>
             
-            <ProductList></ProductList>
             
         </div>
     );

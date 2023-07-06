@@ -109,7 +109,7 @@ function Login() {
                              <span className={`${styleLogin.sign_text}`}><Link to="/register" className={`${styleLogin.sign_text}`}> Create a free account</Link> </span> </div>
                         <div>
                             <div className={`${styleLogin.login_icons} d-flex flex-wrap justify-content-center`}>
-                                <div className={`${styleLogin.login_icon} d-flex  align-items-center flex-shrink-0`}>
+                                {/* <div className={`${styleLogin.login_icon} d-flex  align-items-center flex-shrink-0`}>
 
                                     <div>
                                     <svg xmlns="http://www.w3.org/2000/svg"
@@ -124,10 +124,10 @@ function Login() {
                                     <path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087
                                     ,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/></svg></div> 
                                     <div className='ms-3'>sign with google</div>
-                                </div>
-                                <div className={`${styleLogin.login_icon}`}>
+                                </div> */}
+                                {/* <div className={`${styleLogin.login_icon}`}>
                                     <i className={`bi bi-facebook ${styleLogin.facebook_icon}`}></i>
-                                </div>
+                                </div> */}
                             </div>
                             <div className='mt-4'>
                                 <hr className={`${styleLogin.break_line}`}></hr>
