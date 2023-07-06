@@ -2,9 +2,15 @@ import courseStyle from './CourseDetails.module.css';
 import CourseCategory from '../CourseCategory/CourseCategory';
 import CourseDetailsMiniHeader from '../CourseDetailsMiniHeader/CourseDetailsMiniHeader';
 import {useParams , useNavigate} from 'react-router-dom';
-import { useState ,useEffect } from 'react';
+import { useState ,useEffect,useContext } from 'react';
 import {getCourseDetails} from '../../services/course_details.service'
+import { AuthContext } from '../../context/AuthContext';
+import { addToCart } from '../../services/addToCart.service';
+import Notification from '../Notification/Notification';
 function CourseDetails() {
+    const {authUser}=useContext(AuthContext)
+    let [toastSuccessMsq,SettoastSuccessMsq] = useState(false)
+    let [toastfailureMsq,SettoastfailureMsq] = useState(false)
     const navigate = useNavigate()
     const [CourseData,setCourseData] =useState({});
     let [NumLectures,setNumlectures]= useState(0)
@@ -14,6 +20,7 @@ function CourseDetails() {
             if (course != 404){
                 setNumlectures(number_lec(course));
                 // console.log(count);
+                console.log(course)
                 setCourseData(course[0])
             }else{
                 navigate('/notFound')
@@ -36,31 +43,55 @@ function CourseDetails() {
         }
         
     }
+    const handleAddToCart=()=>{
+        SettoastSuccessMsq(false);
+        SettoastfailureMsq(false);
+        console.log(CourseData.id)
+        if(authUser.user_id){
+            addToCart({
+                user:authUser.user_id,
+                courses:[CourseData.id],
+                // course:CourseData.id
+            }).then((res)=>{
+                if(res){
+                SettoastSuccessMsq(true);
+                
+                }   
+                else{
+                    SettoastfailureMsq(true)
+                    
+                }
+                
+            }).catch((error)=>{
+                SettoastfailureMsq(true)
+                
+                console.log(error)
+            })
+        }else{
+            navigate('/login')
+        }
+    }
 
     return ( 
        <div className='container-lg  container-md-fluid '>
-        
+            {toastSuccessMsq ? (
+            <Notification msg={"Course added To cart successfuly !"} context={true}></Notification>
+            ):''}
+            {toastfailureMsq ? (
+            <Notification msg={"course Already added to Cart !"} context={false}></Notification>
+            ):''}
             <div className='row mt-5'>
                 <div className='col-lg-7 ms-lg-4 me-lg-4 
                 col-sm-12 col-md-8'>
                     <div className={`${courseStyle.title}`}>Mastering Data Modeling Fundamentals</div>
 
                     <div className={`${courseStyle.instructor } d-flex align-items-center`}>
-                        <img className={`${courseStyle.instructor_img}`} src="https://htmldemo.net/edumall/edumall/assets/images/instructor/instructor-01.jpg"></img>
-                        <div className={`${courseStyle.instructor_title}`}>Mahmoud Ramadan</div>
+                        <img className={`${courseStyle.instructor_img}`} src={CourseData?.instructor?.image}></img>
+                        <div className={`${courseStyle.instructor_title}`}>{CourseData?.instructor?.username}</div>
                         <span className={`${courseStyle.instructor_or}`}> | </span>
-                        <div className={`${courseStyle.course_date}`}>Last Update December 1, 2020</div>
+                        <div className={`${courseStyle.course_date}`}>Last Update July 6, 2023</div>
                     </div>
-                    <div className='d-flex'>
-                        <div className='me-4'>4.38 /5 </div>
-                        <div className=''>
-                            <i className="bi bi-star"> </i>
-                            <i className="bi bi-star"> </i>
-                            <i className="bi bi-star"> </i>
-                            <i className="bi bi-star"> </i>
-                            <i className="bi bi-star"> </i>
-                        </div>
-                    </div>
+                    
                    
                     <div className='mt-5 '>
                         
@@ -132,8 +163,11 @@ function CourseDetails() {
                             </div>
                         </div>
                         
-                        <button type="button" className={`${courseStyle.btn_crt} btn btn-primary w-100 mt-5 p-3 fs-5 mb-2`}>Add To Cart</button>
-                        <button type="button" className={`${courseStyle.btn_wish} btn btn-primary w-100 mt-1 p-3 fs-5 mb-2`}>Add To Wishlist</button>
+                        <button 
+                        onClick={handleAddToCart}
+                        type="button" 
+                        className={`${courseStyle.btn_crt} btn btn-primary w-100 mt-5 p-3 fs-5 mb-2`}>Add To Cart</button>
+                       
                     </div>
                     <CourseCategory/>
                 </div>

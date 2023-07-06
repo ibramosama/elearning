@@ -2,10 +2,14 @@ from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework import generics, permissions, status, filters
+from rest_framework import generics, permissions, status, filters,viewsets
 from .models import Category, Course, Section, Video, Review, Cart
 from .serializers import CategorySerializer, CourseSerializer, SectionSerializer, VideoSerializer, ReviewSerializer, \
+<<<<<<< HEAD
     CourseListSerializer, CartSerializer, EnrollmentSerializer, CourseFieldsSerializer, CartCourseSerializer
+=======
+    CourseListSerializer, CartSerializer, EnrollmentSerializer, CourseFieldsSerializer,CartCourseSerializer
+>>>>>>> 6951b16d5003d2e50d1be31e6508706d5575968f
 from .permissions import (
     IsInstructor,
     IsAdmin,
@@ -156,6 +160,7 @@ class CourseListView(generics.ListAPIView,generics.RetrieveAPIView):
     
 
 
+<<<<<<< HEAD
 class ApprovedCourseListByInstructor(generics.ListAPIView):
     serializer_class = CourseSerializer
     permission_classes = [IsInstructorWithCourse]
@@ -163,6 +168,17 @@ class ApprovedCourseListByInstructor(generics.ListAPIView):
     def get_queryset(self):
         instructor = self.request.user
         return Course.objects.filter(instructor=instructor, is_approved=True)
+=======
+# class AddToCartView(generics.CreateAPIView):
+#     serializer_class = CartSerializer
+#     permission_classes = [IsStudent]
+
+#     def perform_create(self, serializer):
+#         user = self.request.user
+#         courses = serializer.validated_data.get('courses', [])
+#         cart = Cart.objects.create(user=user)
+#         cart.courses.set(courses)
+>>>>>>> 6951b16d5003d2e50d1be31e6508706d5575968f
 
 class AddToCartView(generics.CreateAPIView):
     serializer_class = CartSerializer
@@ -171,6 +187,10 @@ class AddToCartView(generics.CreateAPIView):
     def perform_create(self, serializer):
         user = self.request.user
         courses = serializer.validated_data.get('courses', [])
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6951b16d5003d2e50d1be31e6508706d5575968f
         try:
             cart = Cart.objects.get(user=user)
             for course in courses:
@@ -179,6 +199,7 @@ class AddToCartView(generics.CreateAPIView):
         except Cart.DoesNotExist:
             cart = Cart.objects.create(user=user)
             cart.courses.set(courses)
+<<<<<<< HEAD
 class SectionListByCourse(generics.ListAPIView):
     serializer_class = SectionSerializer
     permission_classes = [IsInstructorWithCourse]
@@ -207,12 +228,48 @@ class CourseListByInstructor(generics.ListAPIView):
         }
         return Response(response_data, status=status.HTTP_200_OK)
 
+=======
+# class AddToCartView(generics.CreateAPIView):
+#     serializer_class = CartSerializer
+#     permission_classes = [IsAuthenticated]
+
+#     def perform_create(self, serializer):
+#         user = self.request.user
+#         courses = serializer.validated_data.get('courses', [])
+#         cart = Cart.objects.create(user=user)
+#         cart.courses.set(courses)
+
+#     def get_queryset(self):
+#         user = self.request.user
+#         cart = Cart.objects.filter(user=user).first()
+#         if cart:
+#             return cart.courses.all()
+#         else:
+#             return Course.objects.none()
+
+#     def get_serializer_context(self):
+#         context = super().get_serializer_context()
+#         context['cart_courses'] = self.get_queryset()
+#         return context
+
+#     def get(self, request, *args, **kwargs):
+#         queryset = self.get_queryset()
+#         serializer = CourseListSerializer(queryset, many=True)
+#         return Response(serializer.data)
+        
+        
+>>>>>>> 6951b16d5003d2e50d1be31e6508706d5575968f
 class CartView(generics.ListAPIView,generics.RetrieveAPIView):
     serializer_class = CartCourseSerializer
     permission_classes = [IsStudent]
     def get_queryset(self):
         user = self.kwargs.get('pk')
         return Cart.objects.filter(user=user)
+<<<<<<< HEAD
+=======
+    
+
+>>>>>>> 6951b16d5003d2e50d1be31e6508706d5575968f
 class VideoList(generics.ListCreateAPIView):
     serializer_class = VideoSerializer
     permission_classes = [IsAuthenticated]

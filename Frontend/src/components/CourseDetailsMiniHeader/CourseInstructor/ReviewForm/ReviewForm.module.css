@@ -9,15 +9,20 @@
   text-align: left;
 }
 
-.h3_reviewForm {
-  margin-bottom: 30px;
-  font-size: 24px;
-  color: #333;
+.form_card{
+  position: relative;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+  
+  padding:2em;
+  margin-right: 1em;
+  border-radius: 3px;
+  cursor: pointer;
+  margin-top: 1em;
 }
-.h5_reviewForm{
-    color: #383434;
-}
-.button_reviewForm {
+
+
+
+.button {
   margin-bottom: 20px;
   padding: 10px 20px;
   font-size: 16px;
@@ -45,6 +50,14 @@
   font-size: 24px;
 }
 
+.filledStar {
+  color: gold;
+}
+
+.emptyStar {
+  color: #ccc;
+}
+
 .formGroup {
   display: flex;
   flex-direction: column;
@@ -65,7 +78,7 @@
   width: 48%;
 }
 
-.random_textarea {
+textarea {
   padding: 10px;
   margin-bottom: 10px;
   border: 1px solid #ccc;
@@ -102,7 +115,7 @@
 /* Responsive Styles */
 @media only screen and (max-width: 600px) {
   .reviewForm {
-    width: 80%;
+    width: 90%;
     margin-left: 10px;
     margin-top: 30px;
   }
@@ -110,7 +123,7 @@
 
 @media only screen and (min-width: 601px) and (max-width: 900px) {
   .reviewForm {
-    width: 70%;
+    width: 90%;
     margin-left: 20px;
     margin-top: 20px;
   }
@@ -118,8 +131,14 @@
 
 @media only screen and (min-width: 901px) {
   .reviewForm {
-    width: 80%;
+    width: 96%;
     margin-left: 30px;
     margin-top: 150px;
   }
+}
+
+
+.rating__star {
+  cursor: pointer;
+  color: #f8dc3bb2;
 }

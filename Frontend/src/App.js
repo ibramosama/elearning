@@ -16,6 +16,8 @@ import CourseDashboard from './components/CourseDashboard/CourseDashboard';
 import NewCourse from './components/InstructorProfile/NewCourse'
 import CourseByCategory from './components/Home/CourseByCategory/CourseByCategory';
 import MainNavigation from './components/Home/MainNavigation/MainNavigation';
+import Cart from './components/Cart/Cart';
+import Courses from './components/Courses/Courses'
 function App() {
   const Role = {
     ADMIN:"admin",
@@ -28,11 +30,16 @@ function App() {
       <Routes>
         {/* public Routes */}
         
-        
         <Route path='/course_display' element={<CourseDashboard/>}></Route>
+        <Route path='/profile' element={<InstructorProfile></InstructorProfile>}></Route>
         
         <Route element={<MainNavigation></MainNavigation>}>
+<<<<<<< HEAD
           <Route path='/profile' element={<InstructorProfile></InstructorProfile>}></Route>
+=======
+          <Route path='/cart' element={<Cart/>}></Route>
+          <Route path='/courses' element={<Courses/>}></Route>
+>>>>>>> 6951b16d5003d2e50d1be31e6508706d5575968f
           <Route path ='/home' element = {<Home/>}/>
           <Route path='/course_details/:id' element={<CourseDetails/>}></Route>
           <Route path ='/login' element ={<Login/>}/>

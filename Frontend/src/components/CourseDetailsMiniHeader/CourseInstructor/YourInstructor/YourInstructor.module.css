@@ -1,26 +1,4 @@
-.navBar {
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
-}
 
-.navList {
-  display: flex;
-  list-style: none;
-  padding: 0;
-}
-
-.navItem {
-  padding: 10px 20px;
-  margin: 0 10px;
-  border-radius: 20px;
-  cursor: pointer;
-}
-
-.active {
-  background-color: #007bff;
-  color: #fff;
-}
 
 .content {
   width: 70%;

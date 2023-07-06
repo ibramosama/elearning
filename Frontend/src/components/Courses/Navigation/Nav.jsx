@@ -21,7 +21,7 @@ const Nav = ({ handleInputChange, query }) => {
         <a href="">
           <AiOutlineShoppingCart className="nav-icons" />
         </a>
-        <a href="">
+        <a href="../profileFrom.jsx">
           <AiOutlineUserAdd className="nav-icons" />
         </a>
       </div>

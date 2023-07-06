@@ -5,7 +5,7 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from django.http import FileResponse
 from rest_framework.exceptions import PermissionDenied
-
+from datetime import datetime
 User = get_user_model()
 
 
@@ -51,7 +51,7 @@ class Assignment(models.Model):
     deadline_days = models.PositiveIntegerField()
     file = models.FileField(upload_to='assignments/', null=True, blank=True)
     section = models.ForeignKey(Section, on_delete=models.CASCADE, related_name='Assignment')
-
+    
     def deadline(self, request):
         user = request.user
         if user.is_authenticated and user.role == "student":

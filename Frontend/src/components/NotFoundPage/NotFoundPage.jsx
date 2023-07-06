@@ -1,6 +1,9 @@
+import E404 from './NotFoundPage.module.css'
 function NotFoundPage() {
     return ( 
-        <div>not found !</div>
+        <div className={`${E404.bad} text-center vh-100`}>
+            <div className={E404.msg}>404 not Found This page !</div>
+        </div>
     );
 }
 

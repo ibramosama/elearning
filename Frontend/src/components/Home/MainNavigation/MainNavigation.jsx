@@ -1,27 +1,36 @@
 import navStyle from './MainNavigation.module.css';
 import {Outlet ,useNavigate} from 'react-router-dom'
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { AuthContext } from '../../../context/AuthContext';
 import {logout} from '../../../services/user.service'
+import { useEffect } from 'react';
+
 function MainNavigation() {
     const {authUser}=useContext(AuthContext)
+    const [auth ,setAuth]= useState(false)
     const navigate = useNavigate()
     const handleNav =(link)=>{
-        console.log(authUser)
-
-        console.log(link)
         navigate(link)
     }
     const handel_logout =() =>{
         logout()
         window.location.reload()
     }
+    useEffect(()=>{
+        if(authUser.user_id){
+            setAuth(true)
+            
+        }else{
+            setAuth(false)
+            
+        }
+    },[])
     return ( 
         <>
         
         <div className={`${navStyle.mainnav} w-100 pt-3 pb-3`}>
             <div className='container-lg container-sm-fluid d-flex align-item-center justify-content-between flex-wrap '>
-                <div className='d-flex align-item-center'>
+                <div className='d-flex align-items-center'>
                     <div 
                     onClick={()=>(handleNav('/home'))}
                     className={`${navStyle.logo} fs-3 ms-lg-4`} >
@@ -32,12 +41,23 @@ function MainNavigation() {
                     <div className={`${navStyle.search}`}>
                         <input type='text' className={`${navStyle.search_input}`} placeholder='search ...'/>
                     </div>
+                    <div onClick={()=>(handleNav('/home'))} className={`${navStyle.links}`}> Home </div>
+                    <div onClick={()=>(handleNav('/courses'))} className={`${navStyle.links}`} > Courses </div>
+
                 </div>
-                { authUser?.username  ? 
+                { auth  ? 
                 
                     <div className='d-flex align-items-center me-lg-4'>
                         
-                        <div className={`${navStyle.user_name}`}>{authUser?.username}</div>
+                        <div 
+                        id="dropdownMenuButton"
+                        data-bs-toggle="dropdown" aria-expanded="false"
+                        className={`${navStyle.user_name} dropdown`}>{authUser?.username}</div>
+                        <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a className="dropdown-item" href="">Profile</a>
+                            <a className="dropdown-item" href="/cart">My Cart</a>
+                            <a className="dropdown-item" href="" onClick={handel_logout}> Log out </a>
+                        </div>
     
                         <img src={'http://127.0.0.1:8000'+authUser.image} className={`${navStyle.user_img} me-3`}></img>
                         <i onClick={handel_logout} className={`${navStyle.logout} bi bi-door-open ms-3 me-3`}></i>

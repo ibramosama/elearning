@@ -8,16 +8,13 @@ const Price = ({ handleChange }) => {
         <h2 className="sidebar-title price-title">Price</h2>
 
         <label className="sidebar-label-container">
-          <input onChange={handleChange} type="checkbox " value="checkbox" name="test2" />
+          <input
+            onChange={handleChange}
+            type="checkbox "
+            value="checkbox"
+            name="test2"
+          />
         </label>
-
-
-        <Input
-          handleChange={handleChange}
-          value={50}
-          title="free"
-          name="test2"
-        /> 
 
         <Input
           handleChange={handleChange}

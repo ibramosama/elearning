@@ -12,7 +12,7 @@ function Register() {
         email:'',
         password:'',
         phone:'',
-        role:'student',
+        role:'',
         image:null
     });
 
@@ -326,6 +326,7 @@ function Register() {
                                 <div className="mb-2">
                                     <label for="exampleFormControlInput1" class="form-label">Type User</label>
                                     <select 
+                                    name="role"
                                     onChange={operationHandeler} 
                                     class="form-select"
                                     aria-label="Default select example">

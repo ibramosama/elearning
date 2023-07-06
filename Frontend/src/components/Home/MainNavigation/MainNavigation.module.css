@@ -68,7 +68,7 @@
     font-size: large;
     font-weight: 600;
     margin-right:20px ;
-
+    cursor: pointer;
 }
 .logout{
     -webkit-text-stroke: 1px;
@@ -79,4 +79,17 @@
 .logout:hover{
     color:rgb(239, 13, 13);
     
+}
+
+.links{
+    font-weight: 600;
+    color: black;
+    opacity: .8;
+    font-size: large;
+    cursor: pointer;
+    margin-left: 2em;
+
+}
+.links:hover{
+    color:#2882d6;
 }

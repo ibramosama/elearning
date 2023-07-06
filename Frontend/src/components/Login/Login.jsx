@@ -2,6 +2,7 @@ import { useState ,useEffect ,useRef } from 'react';
 import { Link ,useNavigate } from 'react-router-dom';
 import {login} from '../../services/user.service';
 import Notification from '../Notification/Notification';
+
 import styleLogin from './Login.module.css';
 function Login() {
     const navigate = useNavigate();
@@ -35,7 +36,9 @@ function Login() {
                     if(result == 200){
                         SettoastSuccessMsq(true);
                         setTimeout(() => {
-                            navigate('/home')
+                            window.history.pushState(null, '', '/home');
+                            // navigate('/home',{ replace: true })
+                            window.location.reload()
                         }, 2000);
                     }else{
                         SettoastfailureMsq(true);

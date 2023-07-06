@@ -34,8 +34,11 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         token['role'] = user.role
         token['username'] = user.username
         token['image'] = user.image.url
+<<<<<<< HEAD
         token['email'] = user.email
         token['role'] = user.role
         token['username'] =user.username
         token['image'] =user.image.url
+=======
+>>>>>>> 6951b16d5003d2e50d1be31e6508706d5575968f
         return token
