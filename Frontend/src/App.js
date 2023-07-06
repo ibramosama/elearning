@@ -32,12 +32,14 @@ function App() {
         <Route path='/course_display' element={<CourseDashboard/>}></Route>
         
         <Route element={<MainNavigation></MainNavigation>}>
-          <Route path='profile' element={<InstructorProfile></InstructorProfile>}></Route>
+          <Route path='/profile' element={<InstructorProfile></InstructorProfile>}></Route>
           <Route path ='/home' element = {<Home/>}/>
           <Route path='/course_details/:id' element={<CourseDetails/>}></Route>
           <Route path ='/login' element ={<Login/>}/>
           <Route path ='/register' element = {<Register/>}/>
           <Route path='/category/:id' element={<CourseByCategory/>}></Route>
+          <Route path='/new-course' element={<NewCourse/>}></Route>
+
         </Route>
         
         {/* admin Routes */}
@@ -49,7 +51,6 @@ function App() {
         <Route element={<Auth allowedRoles={[Role.INSTRUCTOR]}/>}>
           <Route path = '/instructor' element = {<Home/>}/>
         </Route>
-        <Route path ='/createCourse' element={ <NewCourse/>}></Route>
         {/* student Routes */}
         <Route element={<Auth allowedRoles={[Role.STUDENT]}/>}>
           <Route path='/student' element={<Home/>}/>

@@ -107,7 +107,7 @@ class QuizList(APIView):
     def put(self, request):
         # Get the quiz object to be updated
         quiz_id = request.data.get('quiz_id')
-        quiz = Quiz.objects.filter(course__instructor=request.user, quiz_id=quiz_id).first()
+        quiz = Quiz.objects.filter(id=quiz_id, course__instructor=request.user).first()
         if not quiz:
             return Response({"error": "Quiz not found or you are not the instructor of this course."},
                             status=status.HTTP_404_NOT_FOUND)

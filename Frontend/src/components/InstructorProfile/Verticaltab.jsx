@@ -3,6 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTachometerAlt, faUser, faGraduationCap, faHeart, faStar, faHistory, faChalkboardTeacher, faBell, faMoneyBillAlt, faQuestionCircle, faFileAlt, faUsers, faCog, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import styles from './LeftSidebar.module.css';
 import CourseInfoCard from './CourseInfoCard';
+import  UserProfile  from './InstructorInfo';
+import QuizForm from './QuizForm';
 
 const LeftSidebar = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -46,20 +48,7 @@ const LeftSidebar = () => {
             <FontAwesomeIcon icon={faUser} />
             <span>My Profile</span>
           </div>
-          <div
-            className={`${styles.sidebarItem} ${activeTab === 'courses' ? styles.active : ''}`}
-            onClick={() => handleTabClick('courses')}
-          >
-            <FontAwesomeIcon icon={faGraduationCap} />
-            <span>Enrolled Courses</span>
-          </div>
-          <div
-            className={`${styles.sidebarItem} ${activeTab === 'wishlist' ? styles.active : ''}`}
-            onClick={() => handleTabClick('wishlist')}
-          >
-            <FontAwesomeIcon icon={faHeart} />
-            <span>Wishlist</span>
-          </div>
+
           <div
             className={`${styles.sidebarItem} ${activeTab === 'reviews' ? styles.active : ''}`}
             onClick={() => handleTabClick('reviews')}
@@ -68,26 +57,13 @@ const LeftSidebar = () => {
             <span>Reviews</span>
           </div>
           <div
-            className={`${styles.sidebarItem} ${activeTab === 'quiz-attempts' ? styles.active : ''}`}
-            onClick={() => handleTabClick('quiz-attempts')}
+            className={`${styles.sidebarItem} ${activeTab === 'َQuiz' ? styles.active : ''}`}
+            onClick={() => handleTabClick('َQuiz')}
           >
             <FontAwesomeIcon icon={faHistory} />
-            <span>My Quiz Attempts</span>
+            <span>َCreate Quiz</span>
           </div>
-          <div
-            className={`${styles.sidebarItem} ${activeTab === 'purchase-history' ? styles.active : ''}`}
-            onClick={() => handleTabClick('purchase-history')}
-          >
-            <FontAwesomeIcon icon={faMoneyBillAlt} />
-            <span>Purchase History</span>
-          </div>
-          <div
-            className={`${styles.sidebarItem} ${activeTab === 'instructor' ? styles.active : ''}`}
-            onClick={() => handleTabClick('instructor')}
-          >
-            <FontAwesomeIcon icon={faChalkboardTeacher} />
-            <span> INSTRUCTOR</span>
-          </div>
+
           <div
             className={`${styles.sidebarItem} ${activeTab === 'my-courses' ? styles.active : ''}`}
             onClick={() => handleTabClick('my-courses')}
@@ -95,27 +71,9 @@ const LeftSidebar = () => {
             <FontAwesomeIcon icon={faGraduationCap} />
             <span>My Courses</span>
           </div>
-          <div
-            className={`${styles.sidebarItem} ${activeTab === 'announcements' ? styles.active : ''}`}
-            onClick={() => handleTabClick('announcements')}
-          >
-            <FontAwesomeIcon icon={faBell} />
-            <span>Announcements</span>
-          </div>
-          <div
-            className={`${styles.sidebarItem} ${activeTab === 'withdrawals' ? styles.active : ''}`}
-            onClick={() => handleTabClick('withdrawals')}
-          >
-            <FontAwesomeIcon icon={faMoneyBillAlt} />
-            <span>Withdrawals</span>
-          </div>
-          <div
-            className={`${styles.sidebarItem} ${activeTab === 'quiz-attempts-instructor' ? styles.active : ''}`}
-            onClick={() => handleTabClick('quiz-attempts-instructor')}
-          >
-            <FontAwesomeIcon icon={faHistory} />
-            <span>Quiz Attempts</span>
-          </div>
+
+
+          
           <div
             className={`${styles.sidebarItem} ${activeTab === 'qna' ? styles.active : ''}`}
             onClick={() => handleTabClick('qna')}
@@ -137,13 +95,7 @@ const LeftSidebar = () => {
             <FontAwesomeIcon icon={faUsers} />
             <span>My Students</span>
           </div>
-          <div
-            className={`${styles.sidebarItem} ${activeTab === 'settings' ? styles.active : ''}`}
-            onClick={() => handleTabClick('settings')}
-          >
-            <FontAwesomeIcon icon={faCog} />
-            <span>Settings</span>
-          </div>
+
           <div
             className={`${styles.sidebarItem} ${activeTab === 'logout' ? styles.active : ''}`}
             onClick={() => handleTabClick('logout')}
@@ -155,8 +107,10 @@ const LeftSidebar = () => {
       )}
       <div className={styles.mainContent}>
         {activeTab === 'my-courses' && <CourseInfoCard />}
-        {/* Render other components based on activeTab */}
-      </div>
+        {activeTab === 'profile' && <UserProfile />}     
+        {activeTab === 'َQuiz' && <QuizForm />}     
+
+         </div>
     </div>
   );
 };

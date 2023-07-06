@@ -1,5 +1,6 @@
 from datetime import timedelta, datetime
 
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.http import FileResponse
@@ -28,7 +29,7 @@ class Course(models.Model):
     course_image = models.ImageField(upload_to='courses/images')
     instructor = models.ForeignKey(User, on_delete=models.CASCADE)
     students = models.ManyToManyField(User, through='Enrollment', related_name='enrollments', default=[])
-    is_approved = models.BooleanField(default=False)
+    is_approved = models.BooleanField(default=True)
     description = models.CharField(null=True, blank=True)
     level = models.CharField(max_length=20, choices=LEVEL_CHOICES)
     
@@ -64,15 +65,19 @@ class Assignment(models.Model):
         return self.title
 
 
-
 class Quiz(models.Model):
     title = models.CharField(max_length=255)
     instructions = models.TextField()
-    start_time = models.DateTimeField()
-    end_time = models.DateTimeField()
+    start_time = models.TimeField()
+    end_time = models.TimeField()
     deadline_days = models.PositiveIntegerField()
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='course_quizzes')
     section = models.ForeignKey(Section, on_delete=models.CASCADE, related_name='course_quizzes')
+
+    def clean(self):
+        super().clean()
+        if self.start_time >= self.end_time:
+            raise ValidationError("Start time must be before the end time.")
 
     def deadline(self, request):
         user = request.user
@@ -95,7 +100,7 @@ class Enrollment(models.Model):
 
 
 class Cart(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='cart_items')
     courses = models.ManyToManyField(Course, related_name='carts')
 
     def __str__(self):

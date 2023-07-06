@@ -15,6 +15,7 @@ const CreateCourseForm = () => {
   const [level, setLevel] = useState('');
   const [courseImage, setCourseImage] = useState(null);
   const [sections, setSections] = useState([{ section: '', videos: [], assignments: [], quizzes: [] }]);
+  const token = localStorage.getItem('access'); 
 
 
   useEffect(() => {
@@ -178,8 +179,7 @@ const CreateCourseForm = () => {
       .post('http://localhost:8000/course/courses/', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg4NTM2MjU5LCJpYXQiOjE2ODg1MTgyNTksImp0aSI6IjFkZDY3MzgwZmZlMTRkMTc4ZWRhYzA2NWIwYTg0N2ZlIiwidXNlcl9pZCI6MywiZW1haWwiOiJpYnJhbS5vc2FtYTE3QGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiJ9.pTcGX2mftSCJ3xLKTnrmph6Z-hFjVbZzQhb2rV_F4i4`,
-        },
+          'Authorization': `Bearer ${token}`        },
       })
   
       .then((response) => {
@@ -308,9 +308,9 @@ const CreateCourseForm = () => {
              <label htmlFor={`quiz-${sectionIndex}-${quizIndex}-instructions`}>Instructions:</label>
              <textarea id={`quiz-${sectionIndex}-${quizIndex}-instructions`} name="instructions" value={quiz.instructions} onChange={(event) => handleQuizChange(sectionIndex, quizIndex, event)} />
              <label htmlFor={`quiz-${sectionIndex}-${quizIndex}-start_time`}>Start Time:</label>
-             <input type="datetime-local" id={`quiz-${sectionIndex}-${quizIndex}-start_time`} name="start_time" value={quiz.start_time} onChange={(event) => handleQuizChange(sectionIndex, quizIndex, event)} />
+             <input type="time" id={`quiz-${sectionIndex}-${quizIndex}-start_time`} name="start_time" value={quiz.start_time} onChange={(event) => handleQuizChange(sectionIndex, quizIndex, event)} />
              <label htmlFor={`quiz-${sectionIndex}-${quizIndex}-end_time`}>End Time:</label>
-             <input type="datetime-local" id={`quiz-${sectionIndex}-${quizIndex}-end_time`} name="end_time" value={quiz.end_time} onChange={(event) => handleQuizChange(sectionIndex, quizIndex, event)} />
+             <input ttype="time" id={`quiz-${sectionIndex}-${quizIndex}-end_time`} name="end_time" value={quiz.end_time} onChange={(event) => handleQuizChange(sectionIndex, quizIndex, event)} />
              <label htmlFor={`quiz-${sectionIndex}-${quizIndex}-deadline_days`}>Deadline (days):</label>
              <input type="number" id={`quiz-${sectionIndex}-${quizIndex}-deadline_days`} name="deadline_days" value={quiz.deadline_days} onChange={(event) => handleQuizChange(sectionIndex, quizIndex, event)} />
              <button type="button" onClick={() => handleRemoveQuiz(sectionIndex, quizIndex)}>Remove Quiz</button>

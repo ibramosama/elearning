@@ -54,18 +54,15 @@ class InstructorSerializer(serializers.ModelSerializer):
 
 class CourseFieldsSerializer(serializers.ModelSerializer):
     instructor = InstructorSerializer()
-<<<<<<< HEAD
     category = serializers.ReadOnlyField(source='category.name')
     class Meta:
         model = Course
         fields = ('id', 'title', 'duration', 'price', 'course_image', 'instructor', 'level', 'category')
-=======
     category =serializers.ReadOnlyField(source='category.name')
     class Meta:
         model = Course
-        fields = ('id', 'title', 'duration', 'price', 'course_image','instructor','level','category')
+        fields = ('id', 'title', 'duration', 'price', 'course_image', 'instructor', 'level', 'category')
     
->>>>>>> 66723d20e03a8d5800a6bda079041d49bb956233
 
 
 class CourseSerializer(serializers.ModelSerializer):
@@ -89,8 +86,8 @@ class CourseSerializer(serializers.ModelSerializer):
         representation = super().to_representation(instance)
         user = self.context['request'].user
 
-        if self.context['request'].method in ['PUT', 'GET', 'POST']:
-            if not user.is_staff and user == instance.instructor:
+        if self.context['request'].method in ['PUT', 'POST']:
+            if not user.role=='admin' and user == instance.instructor:
                 representation.pop('is_approved', None)
 
         return representation
@@ -226,15 +223,12 @@ class ReviewSerializer(serializers.ModelSerializer):
 class CourseListSerializer(serializers.ModelSerializer):
     demo = serializers.SerializerMethodField()
     description = serializers.SerializerMethodField()
-    sections=serializers.SerializerMethodField()
+    sections = serializers.SerializerMethodField()
     category =serializers.ReadOnlyField(source='category.name')
     class Meta:
         model = Course
         fields = ('id', 'title', 'duration', 'price', 'category', 'course_image', 'description', 'demo','sections','level')
-    
-    # def get_category(self,obj):
-    #     category = Category.objects.get(pk=obj.)
-    #     return category
+
     def get_sections(self, obj):
         sections = Section.objects.filter(course=obj.id).all()
         section_data = []
@@ -263,9 +257,6 @@ class CourseListSerializer(serializers.ModelSerializer):
         # Return the description of the course
         return obj.description
 
-
-
-
 class CartSerializer(serializers.ModelSerializer):
     total_price = serializers.ReadOnlyField()
 
@@ -279,4 +270,9 @@ class EnrollmentSerializer(serializers.ModelSerializer):
         model = Enrollment
         fields = ('user', 'course', 'date_enrolled')
 
-
+class CartCourseSerializer(serializers.ModelSerializer):
+    total_price = serializers.ReadOnlyField()
+    courses= CourseSerializer(many=True)
+    class Meta:
+        model = Cart
+        fields = ('user', 'courses', 'total_price')

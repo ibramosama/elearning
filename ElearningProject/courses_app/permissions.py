@@ -117,12 +117,11 @@ class IsStudent(permissions.BasePermission):
         user = request.user
         return user.is_authenticated and user.role == 'student'
 
-class IsInstructorWithCourse(BasePermission):
-    message = 'You cannot create sections or videos without uploading a course.'
-
+class IsInstructorWithCourse(permissions.BasePermission):
     def has_permission(self, request, view):
-        user = request.user
-        if user.role == 'instructor' and not user.courses.exists():
+        if request.user.is_anonymous:
             return False
-        return True
+
+        return request.user.role == 'instructor'
+
 
